@@ -6,7 +6,7 @@
 // Testcases for the implementation of functions in Linked list
 // ------------------------------------------------------------------------------------------------
 
-#include<stdio.h>
+#include <stdio.h>
 #include "intlist.h"
 
 int main () {
