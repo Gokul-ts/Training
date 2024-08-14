@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="intlist.c">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="file.c" />
     <ClCompile Include="intlist.c" />
     <ClCompile Include="testintlist.c" />
   </ItemGroup>
