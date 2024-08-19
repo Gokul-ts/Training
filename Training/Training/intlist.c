@@ -6,7 +6,7 @@
 // c program for creating a Linked List
 // ------------------------------------------------------------------------------------------------
 
-#include <stdio.h>
+#include<stdio.h>
 #include <stdlib.h>
 #include "intlist.h"
 #include <stdbool.h>
