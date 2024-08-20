@@ -6,37 +6,41 @@
 // c program for creating a Linked List
 // ------------------------------------------------------------------------------------------------
 
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include "intlist.h"
 #include <stdbool.h>
 
-bool isDeleted;
+bool isDeleted; //flag variable for list deleted status
 
 /// <summary>Creates a new LinkedList to hold integers</summary>
 /// <returns>pointer to linked list</returns>
-Node* Create () {
-	Node* head = NULL;
-	isDeleted = false;
-	return head;
+LinkedList* Create () {
+	LinkedList* list = (LinkedList*)malloc (sizeof (LinkedList));
+	if (list != NULL) {
+		list->head = NULL;
+		list->isDeleted = false;
+	}
+	return list;
 }
 
 
 /// <summary>Adds element to the end of the list</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <param name="value"></param>
 /// <returns>Error code (if any)</returns>
-int Add (Node** head, int data) {
+int Add (LinkedList* list, dataType data) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: checks if the list is empty
 	Node* newNode = CreateNode (data);
-	if (*head == NULL) {
-		*head = newNode;
+	if (list->head == NULL) {
+		list->head = newNode;
 		return 0;
 	}
 	//case2: if the list is not empty, it iterates to the desired position
-	Node* current = *head;
+	Node* current = list->head;
 	while (current->next != NULL) {
 		current = current->next;
 	}
@@ -47,14 +51,14 @@ int Add (Node** head, int data) {
 
 
 /// <summary>Return the number of elements in list</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <returns>Error code (if any)</returns>
-int Count (Node* head) {
+int Count (LinkedList* list) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: if the list is not deleted, it iterates to get count
 	int count = 0;
-	Node* current = head;
+	Node* current = list->head;
 	while (current != NULL) {
 		count++;
 		current = current->next;
@@ -64,16 +68,16 @@ int Count (Node* head) {
 
 
 /// <summary>Delete the entire list</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <returns>Error code (if any)</returns>
-int Delete (Node** head) {
+int Delete (LinkedList* list) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: Checks if the list is empty and deletes list
-	Node* current = *head;
+	Node* current = list->head;
 	Node* next = NULL;
 	if (current == NULL) {
-		isDeleted = true;
+		list->isDeleted = true;
 		return 0;
 	}
 	//case2: if the list is not empty, it iterates to the end and deletes all nodes
@@ -82,26 +86,26 @@ int Delete (Node** head) {
 		free (current);
 		current = next;
 	}
-	*head = NULL;
-	isDeleted = true;
+	list->head = NULL;
+	list->isDeleted = true;
 	return 0;
 }
 
 
 /// <summary>Removes the first occurrence of specified value in list</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <param name="value"></param>
 /// <returns>Error code (if any)</returns>
-int Remove (Node** head, int data) {
+int Remove (LinkedList* list, dataType data) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: Checks if the list is empty
-	Node* temp = *head;
+	Node* temp = list->head;
 	Node* prev = NULL;
-	if (temp == NULL) return Empty_list;
+	if (temp == NULL) return E_EMPTY_LIST;
 	//case2: Check if the data in head(1st node) is to be removed
 	if (temp != NULL && temp->data == data) {
-		*head = temp->next;
+		list->head = temp->next;
 		free (temp);
 		return 0;
 	}
@@ -116,25 +120,25 @@ int Remove (Node** head, int data) {
 		free (temp);
 		return 0;
 	} else {
-		return Value_not_found;
+		return E_VALUE_NOT_FOUND;
 	}
 }
 
 
 /// <summary>Removes the value at a specified index</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <param name="index"></param>
 /// <returns>Error code (if any)</returns>
-int RemoveAt (Node** head, int index) {
+int RemoveAt (LinkedList* list, int index) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: Checks if the list is empty
-	Node* temp = *head;
+	Node* temp = list->head;
 	Node* prev = NULL;
-	if (temp == NULL) return Empty_list;
+	if (temp == NULL) return E_EMPTY_LIST;
 	//case2: Check if the data in head(1st node) is to be removed
 	if (index == 0) {
-		*head = temp->next;
+		list->head = temp->next;
 		free (temp);
 		return 0;
 	}
@@ -149,21 +153,21 @@ int RemoveAt (Node** head, int index) {
 		free (temp);
 		return 0;
 	} else {
-		return Index_out_of_range;
+		return E_INDEX_OUT_OF_RANGE;
 	}
 }
 
 
 /// <summary>Returns the value at a specified index</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <param name="index"></param>
 /// <returns>Error code (if any)</returns>
-int Get (Node* head, int index) {
+int Get (LinkedList* list, int index) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//case1: Checks if the list is empty
-	Node* temp = head;
-	if (temp == NULL) return Empty_list;
+	Node* temp = list->head;
+	if (temp == NULL) return E_EMPTY_LIST;
 	//case2: iterates to get the value at index
 	int count = 0;
 	while (temp != NULL) {
@@ -171,34 +175,34 @@ int Get (Node* head, int index) {
 		count++;
 		temp = temp->next;
 	}
-	return Index_out_of_range;
+	return E_INDEX_OUT_OF_RANGE;
 };
 
 
 /// <summary>Inserts a value at a specified index</summary>
-/// <param name="pointer address"></param>
+/// <param name="linkedlist pointer"></param>
 /// <param name="value"></param>
 /// <param name="index"></param>
 /// <returns>Error code (if any)</returns>
-int Insert (Node** head, int data, int index) {
+int Insert (LinkedList* list, dataType data, int index) {
 	//BaseCase: checks if the list is deleted
-	if (isDeleted == true) return List_does_not_exist;
+	if (list->isDeleted == true) return E_LIST_DOES_NOT_EXIST;
 	//Case1: Checks if the inserted node is going to be the head
 	Node* newNode = CreateNode (data);
 	if (index == 0) {
-		newNode->next = *head;
-		*head = newNode;
+		newNode->next = list->head;
+		list->head = newNode;
 		return 0;
 	}
 	//case2: if the list is not empty, it iterates to get the data at spec. index
-	Node* temp = *head;
+	Node* temp = list->head;
 	for (int i = 0; i < index - 1 && temp != NULL; i++) {
 		temp = temp->next;
 	}
 	//case3: checks if index exceeds list count
 	if (temp == NULL || index < 0) {
 		free (newNode);
-		return Index_out_of_range;
+		return E_INDEX_OUT_OF_RANGE;
 	}
 	newNode->next = temp->next;
 	temp->next = newNode;
@@ -206,9 +210,8 @@ int Insert (Node** head, int data, int index) {
 }
 
 
-Node* CreateNode (int data) { //creates a new node with specified value
-	Node* newNode = NULL;
-	newNode = (Node*)malloc (sizeof (Node));
+Node* CreateNode (dataType data) { //creates a new node with specified value
+	Node* newNode = (Node*)malloc (sizeof (Node));
 	if (newNode != NULL) {
 		newNode->data = data;
 		newNode->next = NULL;

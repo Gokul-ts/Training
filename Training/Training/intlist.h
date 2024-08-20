@@ -6,25 +6,33 @@
 // Header file for creating a Linked List
 // ------------------------------------------------------------------------------------------------
 #pragma once
+#include <stdbool.h>
 
-#define Index_out_of_range  -1
-#define Empty_list -2
-#define List_does_not_exist -3
-#define Value_not_found -4
+#define E_INDEX_OUT_OF_RANGE  -1
+#define E_EMPTY_LIST -2
+#define E_LIST_DOES_NOT_EXIST -3
+#define E_VALUE_NOT_FOUND -4
+
+typedef int dataType; //the datatype can be changed based on requirement
 
 typedef struct Node {
-	int data;
+	dataType data;
 	struct Node* next;
 }Node;
 
-Node* Create ();
-int Add (Node** head, int data);
-int Count (Node* head);
-int Delete (Node** head);
-int Remove (Node** head, int data);
-int RemoveAt (Node** head, int index);
-int Get (Node* head, int index);
-int Insert (Node** head, int data, int index);
-Node* CreateNode (int data);
+typedef struct LinkedList {
+	bool isDeleted;
+	struct Node* head;
+}LinkedList;
+
+LinkedList* Create ();
+int Add (LinkedList* list, dataType data);
+int Count (LinkedList* list);
+int Delete (LinkedList* list);
+int Remove (LinkedList* list, dataType data);
+int RemoveAt (LinkedList* list, int index);
+int Get (LinkedList* list, int index);
+int Insert (LinkedList* list, dataType data, int index);
+Node* CreateNode (dataType data);
 
 
