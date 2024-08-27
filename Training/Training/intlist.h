@@ -16,23 +16,33 @@
 typedef int dataType; //the datatype can be changed based on requirement
 
 typedef struct Node {
-	dataType data;
-	struct Node* next;
+   dataType data;
+   struct Node* next;
 }Node;
 
 typedef struct LinkedList {
-	bool isDeleted;
-	struct Node* head;
+   int count;
+   bool isDeleted;
+   struct Node* head;
 }LinkedList;
 
+/// <summary>Returns a pointer to a new LinkedList of integers</summary>
 LinkedList* Create ();
+/// <summary>Adds element to the end of the list</summary>
 int Add (LinkedList* list, dataType data);
+/// <summary>Return the number of elements in list</summary>
 int Count (LinkedList* list);
+/// <summary>Delete the entire list</summary>
 int Delete (LinkedList* list);
+/// <summary>Removes the first occurrence of specified value in list</summary>
 int Remove (LinkedList* list, dataType data);
+/// <summary>Removes the value at a specified index</summary>
 int RemoveAt (LinkedList* list, int index);
+/// <summary>Returns the value at a specified index</summary>
 int Get (LinkedList* list, int index);
+/// <summary>Inserts a value at a specified index</summary>
 int Insert (LinkedList* list, dataType data, int index);
+/// <summary>Creates a new node with specified value</summary>
 Node* CreateNode (dataType data);
 
 
