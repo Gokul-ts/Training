@@ -12,85 +12,69 @@
 
 #define DIGIT 8
 int binCount = 0, hexCount = 0;
-bool isNegative = true;
 int* binary = NULL;
 char* hex = NULL;
 
-/// <summary>Converts positive integer into binary</summary>
-int* PosToBin (int num);
-/// <summary>Converts negative integer into binary</summary>
-void NegToBin (int num);
-/// <summary>Converts negative and positive integer into hexadecimal</summary>
-void BinToHex (int num);
-/// <summary>Prints the elements of an array</summary>
-void PrintResult (int* array);
+/// <summary>Converts integers into binary</summary>
+void Binary (int number);
+/// <summary>Converts integers into hexadecimal</summary>
+void DecToHex (int num);
 
-void main () {
-   for (;;) {
+int main () {
+   int dec;
+   char term;
+   while (true) {
       printf ("Enter a decimal number:");
-      int input = 0;
-      int n = scanf ("%d", &input);
-      if (n != 1) { //checking if the number is valid
-         printf ("Please enter a VALID NUMBER!!!");
-         return;
+      if (scanf_s ("%d%c", &dec, &term, 1) != 2 || term != '\n') { //condition to check whether input is valid
+         printf ("Please enter a VALID NUMBER!!!\n\n");
+         for (;;) {
+            term = fgetc (stdin);
+            if (term == EOF || term == '\n')
+               break;
+         }
+      } else {
+         Binary (dec);
+         DecToHex (dec);
+         binCount = 0;
+         hexCount = 0;
       }
-      if (input < 0) { //checking if the number is negative
-         NegToBin (input);
-      } else if (input > 0) { //checking if the number is positive
-         isNegative = false;
-         PosToBin (input);
-         free (binary);
-      } else printf ("Binary value:0b0"); //checking if the input is zero
-      BinToHex (input);
-      binCount = 0;
-      hexCount = 0;
-      isNegative = true;
    }
+   return 0;
 }
 
-int* PosToBin (int num) {
+void Binary (int number) {
+   if (number == 0) {
+      printf ("Hexadecimal value: 0b%d", number);
+      return;
+   }
    int temp = 0;
-   temp = num;
+   temp = number;
    while (temp != 0) { //condition to check the num of binary digits
       temp = temp / 2;
       binCount++;
    }
    if (binCount % DIGIT != 0) binCount = binCount + (DIGIT - (binCount % DIGIT)); //changing the digits into 8 bits
    binary = (int*)malloc (binCount * sizeof (int));
-   if (binary != NULL) {
-      for (int j = binCount - 1; j >= 0; j--) { //storing binary values in array
-         binary[j] = num % 2;
-         num = num / 2;
-      }
-      if (isNegative == false) PrintResult (binary);
-      return binary;
-   }
-   return 0;
-}
-
-void NegToBin (int num) {
-   int posNum = 0;
-   if (num < 0) posNum = -(num);
-   int* array = PosToBin (posNum);
-   for (int j = 0; j < binCount; j++) {  //condition to add 1's compliment
-      if (array[j] == 0) array[j] = 1;
-      else array[j] = 0;
-   }
-   for (int j = binCount - 1; j >= 0; j--) { //condition to add 2's compliment
-      if (array[j] == 1)   array[j] = 0;
-      else {
-         array[j] = 1;
-         break;
+   int index = binCount - 1;
+   while (index >= 0) {
+      if (binary != NULL) {
+         binary[index] = number & 1; //storing binary values in array
+         index--;
+         number >>= 1;
       }
    }
-   PrintResult (array);
-   isNegative = true;
+   printf ("Binary Value: 0b");
+   for (int i = 0; i < binCount; i++)
+      if (binary != NULL) {
+         printf ("%d", binary[i]);
+      }
+   printf ("\n");
    free (binary);
 }
 
-void BinToHex (int num) {
+void DecToHex (int num) {
    if (num == 0) {
-      printf ("\nHexadecimal value:0x%d\n\n", num);
+      printf ("\nHexadecimal value: 0x%d\n\n", num);
       return;
    }
    int temp = 0;
@@ -110,14 +94,9 @@ void BinToHex (int num) {
          unsNum >>= 4;
       }
       hex[hexCount] = '\0';
-      printf ("\nHexadecimal value:0x%s\n\n", hex);
+      printf ("Hexadecimal value: 0x%s\n\n", hex);
    }
    free (hex);
-}
-
-void PrintResult (int* array) {
-   printf ("Binary value:0b");
-   for (int i = 0; i < binCount; i++) printf ("%d", array[i]);
 }
 
 
