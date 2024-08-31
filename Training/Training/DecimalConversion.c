@@ -7,96 +7,104 @@
 // ------------------------------------------------------------------------------------------------
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <stdbool.h>
-#include<malloc.h>
+#include <string.h>
 
-#define DIGIT 8
-int binCount = 0, hexCount = 0;
-int* binary = NULL;
-char* hex = NULL;
+#define INT_SIZE sizeof(int) * 8
+int binInt[INT_SIZE];
+char binChar[INT_SIZE + 1];
+char hex[INT_SIZE + 1];
 
 /// <summary>Converts integers into binary</summary>
-void Binary (int number);
+char* DecToBin (int num);
 /// <summary>Converts integers into hexadecimal</summary>
-void DecToHex (int num);
+char* DecToHex (int num);
 
-int main () {
-   int dec;
-   char term;
-   while (true) {
-      printf ("Enter a decimal number:");
-      if (scanf_s ("%d%c", &dec, &term, 1) != 2 || term != '\n') { //condition to check whether input is valid
-         printf ("Please enter a VALID NUMBER!!!\n\n");
-         for (;;) {
-            term = fgetc (stdin);
-            if (term == EOF || term == '\n')
-               break;
-         }
-      } else {
-         Binary (dec);
-         DecToHex (dec);
-         binCount = 0;
-         hexCount = 0;
-      }
+void main () {
+   //test cases for Binary conversion
+   printf ("-----Decimal to Binary-----\n");
+   int input[] = { 0,651,-545,999,-4875,15756,-4654,-1,-2147483647 };
+   char* output1[] = {
+      "00000000000000000000000000000000",
+      "00000000000000000000001010001011",
+      "11111111111111111111110111011111",
+      "00000000000000000000001111100111",
+      "11111111111111111110110011110101",
+      "00000000000000000011110110001100",
+      "11111111111111111110110111010010",
+      "11111111111111111111111111111111",
+      "10000000000000000000000000000001" };
+   for (int i = 0; i < 9; i++) {
+      int num1 = input[i];
+      printf ("Test Case%d: Input--> %d ", i + 1, num1);
+      char* binResult1 = DecToBin (num1);
+      int m = strcmp (binResult1, output1[i]);
+      if (m == 0) printf ("\033[1;32mPASS\033[0m\n");
+      else printf ("\033[1;31mFAIL\033[0m\n");
    }
-   return 0;
+   long long int inputLong1 = -2147483649ll;
+   char* outputLong1 = "1111111111111111111111111111111101111111111111111111111111111111"; 
+   printf ("Test Case10: Input--> %lld ", inputLong1);
+   char* binResultLong1 = DecToBin (inputLong1);
+   int k = strcmp (binResultLong1, outputLong1);
+   if (k == 0) printf ("\033[1;32mPASS\033[0m\n");
+   else printf ("\033[1;31mFAIL\033[0m\n");
+
+   //test cases for Hexadecimal conversion
+   printf ("\n-----Decimal to Hexadecimal-----\n");
+   char* output2[] = {
+      "00000000000000000000000000000000",
+      "0000000000000000000000000000028B",
+      "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFDDF",
+      "000000000000000000000000000003E7",
+      "FFFFFFFFFFFFFFFFFFFFFFFFFFFFECF5",
+      "00000000000000000000000000003D8C",
+      "FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDD2",
+      "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      "FFFFFFFFFFFFFFFFFFFFFFFF80000001"};
+   for (int i = 0; i < 9; i++) {
+      int num2 = input[i];
+      printf ("Test Case%d: Input--> %d ", i + 1, num2);
+      char* binResult2 = DecToHex (num2);
+      int n = strcmp (binResult2, output2[i]);
+      if (n == 0) printf ("\033[1;32mPASS\033[0m\n");
+      else printf ("\033[1;31mFAIL\033[0m\n");
+   }
+   long long int inputLong2 = -2147483649ll;
+   char* outputLong2 = "FFFFFFFFFFFFFFFFFFFFFFFF7FFFFFFF";
+   printf ("Test Case10: Input--> %lld ", inputLong2);
+   char* binResultLong2 = DecToBin (inputLong2);
+   int l = strcmp (binResultLong2, outputLong2);
+   if (l == 0) printf ("\033[1;32mPASS\033[0m\n");
+   else printf ("\033[1;31mFAIL\033[0m\n");
 }
 
-void Binary (int number) {
-   if (number == 0) {
-      printf ("Hexadecimal value: 0b%d", number);
-      return;
-   }
-   int temp = 0;
-   temp = number;
-   while (temp != 0) { //condition to check the num of binary digits
-      temp = temp / 2;
-      binCount++;
-   }
-   if (binCount % DIGIT != 0) binCount = binCount + (DIGIT - (binCount % DIGIT)); //changing the digits into 8 bits
-   binary = (int*)malloc (binCount * sizeof (int));
-   int index = binCount - 1;
+char* DecToBin (int num) {
+   int index = INT_SIZE - 1;
    while (index >= 0) {
-      if (binary != NULL) {
-         binary[index] = number & 1; //storing binary values in array
-         index--;
-         number >>= 1;
-      }
+      binInt[index--] = num & 1;
+      num >>= 1;
    }
-   printf ("Binary Value: 0b");
-   for (int i = 0; i < binCount; i++)
-      if (binary != NULL) {
-         printf ("%d", binary[i]);
-      }
-   printf ("\n");
-   free (binary);
+   for (int i = 0; i < INT_SIZE; i++) binChar[i] = binInt[i] + '0';
+   binChar[INT_SIZE] = '\0';
+   return binChar;
 }
 
-void DecToHex (int num) {
+char* DecToHex (int num) {
    if (num == 0) {
-      printf ("\nHexadecimal value: 0x%d\n\n", num);
-      return;
+      for (int i = 0; i < INT_SIZE; i++) hex[i] = '0';
+      hex[INT_SIZE] = '\0';
    }
-   int temp = 0;
-   temp = num;
-   while (temp != 0) { //condition to check the num of hexadecimal digits
-      temp = temp / 16;
-      hexCount++;
-   }
-   if (hexCount % DIGIT != 0) hexCount = hexCount + (DIGIT - (hexCount % DIGIT)); //changing the digits into 8 bits
-   hex = (char*)malloc (hexCount + 1 * sizeof (char));
    unsigned int unsNum = (unsigned int)num;
    char hexChars[] = "0123456789ABCDEF";
-   if (hex != NULL) {
-      for (int i = hexCount - 1; i >= 0; i--) { //storing hexadecimal values in array
+   for (int i = INT_SIZE - 1; i >= 0; i--) {
+      if (unsNum != 0) {
          hex[i] = hexChars[unsNum & 0xF];
-         char c = hex[i];
          unsNum >>= 4;
-      }
-      hex[hexCount] = '\0';
-      printf ("Hexadecimal value: 0x%s\n\n", hex);
+      } else if (unsNum == 0 && num < 0) hex[i] = 'F';
+      else if (unsNum == 0 && num > 0) hex[i] = '0';
    }
-   free (hex);
+   hex[INT_SIZE] = '\0';
+   return hex;
 }
 
 
