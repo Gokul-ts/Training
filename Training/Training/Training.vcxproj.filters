@@ -18,5 +18,13 @@
     <ClCompile Include="DecimalConversion.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestCase.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DecimalConversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DecimalConversion.c" />
+    <ClCompile Include="TestCase.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DecimalConversion.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
