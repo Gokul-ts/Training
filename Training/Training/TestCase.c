@@ -10,6 +10,15 @@
 #include <string.h>
 #include "DecimalConversion.h"
 
+#define ANSI_RESET_ALL "\x1b[0m"
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_BLUE "\x1b[36m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+
+/// <summary>Function to get input from user</summary>
+int UserInput ();
+
 void main () {
    //test cases for Binary conversion
    printf ("-----Decimal to Binary-----\n");
@@ -29,8 +38,8 @@ void main () {
       printf ("Test Case%d: Input--> %d ", i + 1, num1);
       char* binResult1 = DecToBin (num1);
       int m = strcmp (binResult1, output1[i]);
-      if (m == 0) printf ("\033[1;32mPASS\033[0m\n");
-      else printf ("\033[1;31mFAIL\033[0m\n");
+      if (m == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
+      else printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
    //checking for decimal numbers exceeding integer range
    long long int inputLong1 = -2147483649ll;
@@ -38,12 +47,11 @@ void main () {
    printf ("Test Case10: Input--> %lld ", inputLong1);
    char* binResultLong1 = DecToBin (inputLong1);
    int k = strcmp (binResultLong1, outputLong1);
-   if (k == 0) printf ("\033[1;32mPASS\033[0m\n");
+   if (k == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
    else {
-      printf ("\033[1;31mFAIL\033[0m\n");
-      printf ("Expected: \033[1;34m%s\033[0m Output: \033[1;31m%s\033[0m\n", outputLong1, binResultLong1);
+      printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
+      printf ("Expected: "ANSI_COLOR_BLUE"%s"ANSI_RESET_ALL" Output: "ANSI_COLOR_RED"%s\n"ANSI_RESET_ALL, outputLong1, binResultLong1);
    }
-
    //test cases for Hexadecimal conversion
    printf ("\n-----Decimal to Hexadecimal-----\n");
    char* output2[] = {
@@ -61,8 +69,8 @@ void main () {
       printf ("Test Case%d: Input--> %d ", i + 1, num2);
       char* binResult2 = DecToHex (num2);
       int n = strcmp (binResult2, output2[i]);
-      if (n == 0) printf ("\033[1;32mPASS\033[0m\n");
-      else printf ("\033[1;31mFAIL\033[0m\n");
+      if (n == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
+      else printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
    //checking for decimal numbers exceeding integer range
    long long int inputLong2 = -2147483649ll;
@@ -70,9 +78,31 @@ void main () {
    printf ("Test Case10: Input--> %lld ", inputLong2);
    char* binResultLong2 = DecToHex (inputLong2);
    int l = strcmp (binResultLong2, outputLong2);
-   if (l == 0) printf ("\033[1;32mPASS\033[0m\n");
+   if (l == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
    else {
-      printf ("\033[1;31mFAIL\033[0m\n");
-      printf ("Expected: \033[1;35m%s\033[0m Output: \033[1;31m%s\033[0m\n", outputLong2, binResultLong2);
+      printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
+      printf ("Expected: "ANSI_COLOR_MAGENTA"%s"ANSI_RESET_ALL" Output: "ANSI_COLOR_RED"%s\n"ANSI_RESET_ALL, outputLong2, binResultLong2);
    }
+   UserInput (); //Validating user input values
+}
+
+int UserInput () {
+   int dec;
+   char term;
+   while (1) {
+      printf ("\nEnter a decimal number:");
+      if (scanf_s ("%d%c", &dec, &term, 1) != 2 || term != '\n') {
+         printf (ANSI_COLOR_RED"Please enter a VALID NUMBER!!!\n"ANSI_RESET_ALL);
+         for (;;) {
+            term = fgetc (stdin);
+            if (term == EOF || term == '\n') break;
+         }
+      } else {
+         char* binNum = DecToBin (dec);
+         printf ("Binary value(0b): "ANSI_COLOR_BLUE"%s"ANSI_RESET_ALL, binNum);
+         char* hexNum = DecToHex (dec);
+         printf ("\nHexadecimal value(0x): "ANSI_COLOR_MAGENTA"%s\n"ANSI_RESET_ALL, hexNum);
+      }
+   }
+   return 0;
 }

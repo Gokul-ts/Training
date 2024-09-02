@@ -25,13 +25,10 @@ char* DecToBin (int num) {
 char* DecToHex (int num) {
    unsigned int unsNum = (unsigned int)num;
    char hexChars[] = "0123456789ABCDEF";
-   //Using bitwise operation the Hexadecimal digits are stored in array
+   //Using bitwise operator the Hexadecimal digits are stored in array
    for (int i = INT_SIZE2 - 1; i >= 0; i--) {
-      if (unsNum != 0) {
-         hex[i] = hexChars[unsNum & 0xF];
-         unsNum >>= 4; // Shifts bits of 'unsNum' four positions to the right
-      } else if (unsNum == 0 && num < 0) hex[i] = 'F';
-      else if (unsNum == 0 && (num > 0 || num == 0)) hex[i] = '0';
+      hex[i] = (unsNum != 0) ? hexChars[unsNum & 0xF] : (num < 0 ? 'F' : '0');
+      unsNum >>= 4; // Shifts bits of 'unsNum' four positions to the right
    }
    hex[INT_SIZE2] = '\0';
    return hex;
