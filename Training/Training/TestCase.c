@@ -75,6 +75,7 @@ void main () {
    TestDecToHex (input2, output4, length2);
    UserInput (); //Validating user input values
 }
+
 int UserInput () {
    int dec;
    char term;
@@ -95,6 +96,7 @@ int UserInput () {
    }
    return 0;
 }
+
 void TestDecToBin (int input[], char* outputBin[], int arrLength) {
     //test cases for Binary conversion
    printf ("-----Decimal to Binary-----\n");
@@ -104,6 +106,7 @@ void TestDecToBin (int input[], char* outputBin[], int arrLength) {
       (strcmp (binResult1, outputBin[i]) == 0) ? printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL) : printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
 }
+
 void TestDecToHex (int input[], char* outputHex[], int arrLength) {
     //test cases for Hexadecimal conversion
    printf ("\n-----Decimal to Hexadecimal-----\n");
