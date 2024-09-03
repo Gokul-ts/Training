@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------------------------------
 
 #define INT_SIZE1 sizeof(int) * 8 //32-bit range
-#define INT_SIZE2 sizeof(int) * 4 //16-bit range
+#define INT_SIZE2 sizeof(int) * 2 //8-bit range
 char bin[INT_SIZE1 + 1];
 char hex[INT_SIZE2 + 1];
 
@@ -21,7 +21,6 @@ char* DecToBin (int num) {
    bin[INT_SIZE1] = '\0';
    return bin;
 }
-
 char* DecToHex (int num) {
    unsigned int unsNum = (unsigned int)num;
    char hexChars[] = "0123456789ABCDEF";

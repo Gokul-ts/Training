@@ -38,15 +38,15 @@ void main () {
       "10000000000000000000000000000001" };
    TestDecToBin (input, output1, length1);
    char* output2[] = {
-      "0000000000000000",
-      "000000000000028B",
-      "FFFFFFFFFFFFFDDF",
-      "00000000000003E7",
-      "FFFFFFFFFFFFECF5",
-      "0000000000003D8C",
-      "FFFFFFFFFFFFEDD2",
-      "FFFFFFFFFFFFFFFF",
-      "FFFFFFFF80000001" };
+      "00000000",
+      "0000028B",
+      "FFFFFDDF",
+      "000003E7",
+      "FFFFECF5",
+      "00003D8C",
+      "FFFFEDD2",
+      "FFFFFFFF",
+      "80000001" };
    TestDecToHex (input, output2, length1);
    printf ("\n");
    int input2[] = { 1,255,1023,16384,2147483647,-1,-5,-2147483647,-2147483648ll };
@@ -63,19 +63,18 @@ void main () {
       "10000000000000000000000000000000" };
    TestDecToBin (input2, output3, length2);
    char* output4[] = {
-      "0000000000000001",
-      "00000000000000FF",
-      "00000000000003FF",
-      "0000000000004000",
-      "000000007FFFFFFF",
-      "FFFFFFFFFFFFFFFF",
-      "FFFFFFFFFFFFFFFB",
-      "FFFFFFFF80000001",
-      "FFFFFFFF80000000" };
+      "00000001",
+      "000000FF",
+      "000003FF",
+      "00004000",
+      "7FFFFFFF",
+      "FFFFFFFF",
+      "FFFFFFFB",
+      "80000001",
+      "80000000" };
    TestDecToHex (input2, output4, length2);
    UserInput (); //Validating user input values
 }
-
 int UserInput () {
    int dec;
    char term;
@@ -96,7 +95,6 @@ int UserInput () {
    }
    return 0;
 }
-
 void TestDecToBin (int input[], char* outputBin[], int arrLength) {
     //test cases for Binary conversion
    printf ("-----Decimal to Binary-----\n");
@@ -106,7 +104,6 @@ void TestDecToBin (int input[], char* outputBin[], int arrLength) {
       (strcmp (binResult1, outputBin[i]) == 0) ? printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL) : printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
 }
-
 void TestDecToHex (int input[], char* outputHex[], int arrLength) {
     //test cases for Hexadecimal conversion
    printf ("\n-----Decimal to Hexadecimal-----\n");

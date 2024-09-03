@@ -9,5 +9,5 @@
 
 /// <summary>Converts integers into binary and returns in 32-bit range</summary>
 char* DecToBin (int num);
-/// <summary>Converts integers into hexadecimal and returns in 16-bit range</summary>
+/// <summary>Converts integers into hexadecimal and returns in 8-bit range</summary>
 char* DecToHex (int num);
