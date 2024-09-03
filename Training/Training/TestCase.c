@@ -18,11 +18,14 @@
 
 /// <summary>Function to get input from user</summary>
 int UserInput ();
+/// <summary>Function to check binary values</summary>
+void TestDecToBin (int input[], char* outputBin[], int arrLength);
+/// <summary>Function to check hexadecimal values</summary>
+void TestDecToHex (int input[], char* outputHex[], int arrLength);
 
 void main () {
-   //test cases for Binary conversion
-   printf ("-----Decimal to Binary-----\n");
    int input[] = { 0,651,-545,999,-4875,15756,-4654,-1,-2147483647 };
+   int length1 = sizeof (input) / sizeof (input[0]);
    char* output1[] = {
       "00000000000000000000000000000000",
       "00000000000000000000001010001011",
@@ -33,27 +36,7 @@ void main () {
       "11111111111111111110110111010010",
       "11111111111111111111111111111111",
       "10000000000000000000000000000001" };
-   for (int i = 0; i < 9; i++) {
-      int num1 = input[i];
-      printf ("Test Case%d: Input--> %d ", i + 1, num1);
-      char* binResult1 = DecToBin (num1);
-      int m = strcmp (binResult1, output1[i]);
-      if (m == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
-      else printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
-   }
-   //checking for decimal numbers exceeding integer range
-   long long int inputLong1 = -2147483649ll;
-   char* outputLong1 = "1111111111111111111111111111111101111111111111111111111111111111";
-   printf ("Test Case10: Input--> %lld ", inputLong1);
-   char* binResultLong1 = DecToBin (inputLong1);
-   int k = strcmp (binResultLong1, outputLong1);
-   if (k == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
-   else {
-      printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
-      printf ("Expected: "ANSI_COLOR_BLUE"%s"ANSI_RESET_ALL" Output: "ANSI_COLOR_RED"%s\n"ANSI_RESET_ALL, outputLong1, binResultLong1);
-   }
-   //test cases for Hexadecimal conversion
-   printf ("\n-----Decimal to Hexadecimal-----\n");
+   TestDecToBin (input, output1, length1);
    char* output2[] = {
       "0000000000000000",
       "000000000000028B",
@@ -64,25 +47,32 @@ void main () {
       "FFFFFFFFFFFFEDD2",
       "FFFFFFFFFFFFFFFF",
       "FFFFFFFF80000001" };
-   for (int i = 0; i < 9; i++) {
-      int num2 = input[i];
-      printf ("Test Case%d: Input--> %d ", i + 1, num2);
-      char* binResult2 = DecToHex (num2);
-      int n = strcmp (binResult2, output2[i]);
-      if (n == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
-      else printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
-   }
-   //checking for decimal numbers exceeding integer range
-   long long int inputLong2 = -2147483649ll;
-   char* outputLong2 = "FFFFFFFF7FFFFFFF";
-   printf ("Test Case10: Input--> %lld ", inputLong2);
-   char* binResultLong2 = DecToHex (inputLong2);
-   int l = strcmp (binResultLong2, outputLong2);
-   if (l == 0) printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL);
-   else {
-      printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
-      printf ("Expected: "ANSI_COLOR_MAGENTA"%s"ANSI_RESET_ALL" Output: "ANSI_COLOR_RED"%s\n"ANSI_RESET_ALL, outputLong2, binResultLong2);
-   }
+   TestDecToHex (input, output2, length1);
+   printf ("\n");
+   int input2[] = { 1,255,1023,16384,2147483647,-1,-5,-2147483647,-2147483648ll };
+   int length2 = sizeof (input) / sizeof (input[0]);
+   char* output3[] = {
+      "00000000000000000000000000000001",
+      "00000000000000000000000011111111",
+      "00000000000000000000001111111111",
+      "00000000000000000100000000000000",
+      "01111111111111111111111111111111",
+      "11111111111111111111111111111111",
+      "11111111111111111111111111111011",
+      "10000000000000000000000000000001",
+      "10000000000000000000000000000000" };
+   TestDecToBin (input2, output3, length2);
+   char* output4[] = {
+      "0000000000000001",
+      "00000000000000FF",
+      "00000000000003FF",
+      "0000000000004000",
+      "000000007FFFFFFF",
+      "FFFFFFFFFFFFFFFF",
+      "FFFFFFFFFFFFFFFB",
+      "FFFFFFFF80000001",
+      "FFFFFFFF80000000" };
+   TestDecToHex (input2, output4, length2);
    UserInput (); //Validating user input values
 }
 
@@ -105,4 +95,24 @@ int UserInput () {
       }
    }
    return 0;
+}
+
+void TestDecToBin (int input[], char* outputBin[], int arrLength) {
+    //test cases for Binary conversion
+   printf ("-----Decimal to Binary-----\n");
+   for (int i = 0; i < arrLength; i++) {
+      printf ("Test Case%d: Input--> %d ", i + 1, input[i]);
+      char* binResult1 = DecToBin (input[i]);
+      (strcmp (binResult1, outputBin[i]) == 0) ? printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL) : printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
+   }
+}
+
+void TestDecToHex (int input[], char* outputHex[], int arrLength) {
+    //test cases for Hexadecimal conversion
+   printf ("\n-----Decimal to Hexadecimal-----\n");
+   for (int i = 0; i < arrLength; i++) {
+      printf ("Test Case%d: Input--> %d ", i + 1, input[i]);
+      char* binResult2 = DecToHex (input[i]);
+      (strcmp (binResult2, outputHex[i]) == 0) ? printf (ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL) : printf (ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
+   }
 }
