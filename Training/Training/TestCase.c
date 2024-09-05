@@ -7,7 +7,8 @@
 // ------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include "DecimalConversion.h"
 
@@ -17,17 +18,12 @@
 #define ANSI_COLOR_BLUE "\x1b[36m"
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 
-//integer range
-#define INT_MAX 2147483648
-#define INT_MIN -2147483649ll
-
 /// <summary>Function to get only integer input from user</summary>
-long long int GetIntegerOnly ();
+int GetIntegerOnly ();
 /// <summary>Function to check binary values</summary>
 void TestDecToBin (int input[], char* outputBin[], int arrLength);
 /// <summary>Function to check hexadecimal values</summary>
 void TestDecToHex (int input[], char* outputHex[], int arrLength);
-
 
 void main () {
 //test cases for Binary conversion
@@ -68,7 +64,7 @@ void main () {
       "11111111111111111111111111111111",
       "11111111111111111111111111111011",
       "10000000000000000000000000000001",
-      "10000000000000000000000000000000" };
+      "10000000000000000000000000000001" };
    TestDecToBin (input2, output3, length2);
    char* output4[] = {
       "00000001",
@@ -79,17 +75,17 @@ void main () {
       "FFFFFFFF",
       "FFFFFFFB",
       "80000001",
-      "80000000" };
+      "80000001" };
    TestDecToHex (input2, output4, length2);
 //User input validation
    while (1) {
-      long long int dec = 0;
+      int dec = 0;
       dec = GetIntegerOnly ();
       if (dec != INT_MIN) {
-         char* binNum = DecToBin ((unsigned int)dec);
-         printf ("Binary value(0b): "ANSI_COLOR_BLUE"%s"ANSI_RESET_ALL, binNum);
-         char* hexNum = DecToHex ((unsigned int)dec);
-         printf ("\nHexadecimal value(0x): "ANSI_COLOR_MAGENTA"%s\n"ANSI_RESET_ALL, hexNum);
+         char* binNum = DecToBin (dec);
+         printf ("Binary value:"ANSI_COLOR_BLUE"0b%s"ANSI_RESET_ALL, binNum);
+         char* hexNum = DecToHex (dec);
+         printf ("\nHexadecimal value:"ANSI_COLOR_MAGENTA"0x%s\n"ANSI_RESET_ALL, hexNum);
       }
    }
 }
@@ -97,7 +93,7 @@ void main () {
 void TestDecToBin (int input[], char* outputBin[], int arrLength) {
    printf ("-----Decimal to Binary-----\n");
    for (int i = 0; i < arrLength; i++) {
-      printf ("Test Case%d: Input--> %-11d ", i + 1, input[i]);
+      printf ("Test Case%d: Input--> %11d ", i + 1, input[i]);
       char* binResult1 = DecToBin (input[i]);
       printf ((strcmp (binResult1, outputBin[i]) == 0) ? "%11s", ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL : "%11s", ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
@@ -106,53 +102,28 @@ void TestDecToBin (int input[], char* outputBin[], int arrLength) {
 void TestDecToHex (int input[], char* outputHex[], int arrLength) {
    printf ("\n-----Decimal to Hexadecimal-----\n");
    for (int i = 0; i < arrLength; i++) {
-      printf ("Test Case%d: Input--> %-11d ", i + 1, input[i]);
+      printf ("Test Case%d: Input--> %11d ", i + 1, input[i]);
       char* binResult2 = DecToHex (input[i]);
       printf ((strcmp (binResult2, outputHex[i]) == 0) ? "%11s", ANSI_COLOR_GREEN"PASS\n"ANSI_RESET_ALL : "%11s", ANSI_COLOR_RED"FAIL\n"ANSI_RESET_ALL);
    }
 }
 
-long long int GetIntegerOnly () {
-   long long int num = 0;
-   int sign = 1, ch;
-   printf ("\nEnter the input: ");
-   ch = getchar ();
-   if (ch == '-') {
-      sign = -1;
-      ch = getchar ();
-   }
-   if (ch == '\n') {
-      printf (ANSI_COLOR_RED"Invalid!!!\n"ANSI_RESET_ALL);
+int GetIntegerOnly () {
+// Check for various possible errors
+   char input[20];
+   int number = 0;
+   char* endptr;
+   printf ("\nEnter an integer: ");
+   if (fgets (input, sizeof (input), stdin) != NULL) {
+      errno = 0;
+      number = strtol (input, &endptr, 10);
+      if (endptr == input || *endptr != '\n' && *endptr != '\0' || (number == LONG_MAX || number == LONG_MIN) && errno == ERANGE || number > INT_MAX || number <= INT_MIN || input[0] == ' ') {
+         printf (ANSI_COLOR_RED"INVALID!!!\n"ANSI_RESET_ALL);
+         return INT_MIN;
+      } else return number;
+   } else {
+      printf (ANSI_COLOR_RED"INVALID!!!\n"ANSI_RESET_ALL);
       return INT_MIN;
    }
-   while (ch != '\n') {
-      if (ch == EOF) {
-         printf (ANSI_COLOR_RED"Invalid!!!\n"ANSI_RESET_ALL);
-         return INT_MIN;
-      }
-      if (isdigit (ch)) {
-         if (num > (INT_MAX - (ch - '0')) / 10) {
-            printf (ANSI_COLOR_RED"Error: Integer overflow\n"ANSI_RESET_ALL);
-            for (;;) {
-               ch = getchar ();
-               if (ch == EOF || ch == '\n') break;
-            }
-            return INT_MIN;
-         }
-         num = num * 10 + (ch - '0');
-      } else {
-         printf (ANSI_COLOR_RED"Error: Special characters are not allowed\n"ANSI_RESET_ALL);
-         for (;;) {
-            ch = getchar ();
-            if (ch == EOF || ch == '\n') break;
-         }
-         return INT_MIN;
-      }
-      ch = getchar ();
-   }
-   if (num > (INT_MAX - 1) && num * sign > 0) {
-      printf (ANSI_COLOR_RED"Error: Integer overflow\n"ANSI_RESET_ALL);
-      return INT_MIN;
-   };
-   return num * sign;
+   return 0;
 }
