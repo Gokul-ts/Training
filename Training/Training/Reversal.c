@@ -56,11 +56,11 @@ void main () {
       if (count == 0 && (num < 54 && num > 48)) {
          switch (num) {
             case '1': {
-               IntegerInput (option);
+               StringInput (option);
                break;
             }
             case '2': {
-               StringInput (option);
+               IntegerInput (option);
                break;
             }
             case '3': {
@@ -114,7 +114,7 @@ bool StrIsPalindrome (char* phrase) {
    return true;
 }
 
-void IntegerInput (int option) {
+void StringInput (int option) {
    char ch = '\n';
    char phrase[MAX_CHAR];
    printf ("\nEnter a Phrase: ");
@@ -128,7 +128,7 @@ void IntegerInput (int option) {
    }
 }
 
-void StringInput (int option) {
+void IntegerInput (int option) {
    char ch = '\n';
    char input[MAX_DIGIT];
    int number = 0;
