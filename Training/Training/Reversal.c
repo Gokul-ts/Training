@@ -137,7 +137,7 @@ void OutputCheck () {
       if (StrIsPalindrome (strInput[i], 0) == 1 || StrIsPalindrome (strInput[i], 0) == 0 || StrIsPalindrome (strInput[i], 0) == -1) strResult = ANSI_COLOR_GREEN"PASS"ANSI_RESET_ALL;
       if (StrIsPalindrome (strInput[i], 0) == 1)strOutput = "It is a Palindrome";
       else if (StrIsPalindrome (strInput[i], 0) == -1) strOutput = "INVALID!!!";
-      printf ("\n| %28s | %22s |   %6s   |"ANSI_COLOR_MAGENTA"\n--------------------------------------------------------------------"ANSI_RESET_ALL, strInput[i], strOutput, strResult);
+      printf ("\n| %-28s | %-22s |   %6s   |"ANSI_COLOR_MAGENTA"\n--------------------------------------------------------------------"ANSI_RESET_ALL, strInput[i], strOutput, strResult);
    }
    printf ("\n\nREVERSE A NUMBER:\n\n-----INPUT--------------OUTPUT-----------RESULT---");
    int numInput[] = { 0,94867,121,34543,8888,-1,-111,154,12121 };
@@ -147,7 +147,7 @@ void OutputCheck () {
       char* numResult = ANSI_COLOR_RED"FAIL"ANSI_RESET_ALL;
       if (NumIsPalindrome (numInput[i], 0) == 1 || NumIsPalindrome (numInput[i], 0) == 0) numResult = ANSI_COLOR_GREEN"PASS"ANSI_RESET_ALL;
       if (NumIsPalindrome (numInput[i], 0) == 1) numOutput = "It is a Palindrome";
-      printf ("\n| %10d | %22s |   %6s   |"ANSI_COLOR_MAGENTA"\n--------------------------------------------------"ANSI_RESET_ALL, numInput[i], numOutput, numResult);
+      printf ("\n| %-10d | %-22s |   %6s   |"ANSI_COLOR_MAGENTA"\n--------------------------------------------------"ANSI_RESET_ALL, numInput[i], numOutput, numResult);
    }
    printf ("\n\n");
 }
