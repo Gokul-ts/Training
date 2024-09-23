@@ -6,7 +6,6 @@
 // Reversal.h
 // HeaderFile for Reversal.c program
 // -----------------------------------------------------------------------------------------------
-
 #define MAX_DIGIT 13 //number input range
 #define MAX_CHAR 52 //character input range
 #define PALINDROME 1
@@ -19,7 +18,7 @@
 #define ANSI_COLOR_BLUE "\x1b[36m"
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 
-/// <summary>Function to check given number is palindrome or not</summary>
-int NumIsPalindrome (int num,long long int* revNum);
-/// <summary>Function to check given string is palindrome or not</summary>
-int StrIsPalindrome (char* phrase, int type);
+/// <summary>Returns whether the given number is palindrome or not</summary>
+int IsNumPalindrome (int num,long long int* revNum);
+/// <summary>Returns whether the given string is palindrome or not</summary>
+int IsStrPalindrome (char* phrase);

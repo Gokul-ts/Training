@@ -5,45 +5,41 @@
 // Reversal.c
 // C program to Check Palindrome or not
 // ------------------------------------------------------------------------------------------------
-
 #include "Reversal.h"
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
 
-int NumIsPalindrome (int num, long long int* revNum) {
+int IsNumPalindrome (int num, long long int* revNum) {
    bool isNegative = false;
    if (num < 0) { // special case for negative numbers
       num = -num;
       isNegative = true;
    }
    int org = num;
-   long long int rev = 0;
+   long long int rev = 0; //Used for storing reversed number exceeding int range
    while (num != 0) {
       rev = rev * 10 + num % 10;
       num /= 10;
    }
-   if (isNegative == true) {
-      *revNum = -rev;
-      return NOT_PALINDROME;
-   } else *revNum = rev;
-   return (rev == org);
+   *revNum = isNegative == true ? -rev : rev;
+   return (*revNum == org);
 }
 
-int StrIsPalindrome (char* phrase, int type) {
-   int j = 0, length = 0;
-   length = (int)strlen (phrase);
-   if (type == 1) length--; //used to remove '\n' from user input 
-   if (length > MAX_CHAR - 2) return ERR_INVALID; // invalid input exceeds buffer
-   char temp[MAX_CHAR];
-   for (int i = 0; i < length; i++) {
-      if (isalnum (phrase[i]) != 0)
-         temp[j++] = phrase[i];
+int IsStrPalindrome (char* phrase) {
+   int left = 0, validChar = 0;
+   int count = (int)strlen (phrase);
+   int right = count - 1;
+   if (count > MAX_CHAR) return ERR_INVALID; //to check if test case input exceeds buffer
+   while (left <= right) {
+      while (left <= right && !isalnum (phrase[left])) left++;
+      while (left <= right && !isalnum (phrase[right])) right--;
+      if (left <= right) {
+         if (toupper (phrase[left]) != toupper (phrase[right])) return NOT_PALINDROME;
+         validChar++; // to check the count of valid characters
+         left++;
+         right--;
+      }
    }
-   temp[j] = '\0';
-   if (j == 0) return ERR_INVALID; //invalid if no alphanumeric is present
-   for (int n = 0; n < (j / 2); n++) {
-      if (toupper (temp[n]) != toupper (temp[j - n - 1])) return NOT_PALINDROME;
-   }
-   return PALINDROME;
+   return (count == 0 || validChar == 0) ? ERR_INVALID : PALINDROME;
 }
