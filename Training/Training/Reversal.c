@@ -30,7 +30,7 @@ int IsStrPalindrome (char* phrase) {
    int left = 0, validChar = 0;
    int count = (int)strlen (phrase);
    int right = count - 1;
-   if (count > MAX_CHAR) return ERR_INVALID; //to check if test case input exceeds buffer
+   if (count > MAX_CHAR - 2) return ERR_INVALID; //to check if test case input exceeds buffer
    while (left <= right) {
       while (left <= right && !isalnum (phrase[left])) left++;
       while (left <= right && !isalnum (phrase[right])) right--;
