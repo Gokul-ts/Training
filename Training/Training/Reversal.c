@@ -27,19 +27,17 @@ int IsNumPalindrome (int num, long long int* revNum) {
 }
 
 int IsStrPalindrome (char* phrase) {
-   int left = 0, validChar = 0;
-   int count = (int)strlen (phrase);
-   int right = count - 1;
-   if (count > MAX_CHAR - 2) return ERR_INVALID; //to check if test case input exceeds buffer
+   int left = 0, isValidChar = 0;
+   int right = (int)strlen (phrase) - 1;
    while (left <= right) {
-      while (left <= right && !isalnum (phrase[left])) left++;
-      while (left <= right && !isalnum (phrase[right])) right--;
-      if (left <= right) {
-         if (toupper (phrase[left]) != toupper (phrase[right])) return NOT_PALINDROME;
-         validChar++; // to check the count of valid characters
-         left++;
-         right--;
+      if (!isalnum (phrase[left])) {
+         left++; continue;
       }
+      if (!isalnum (phrase[right])) {
+         right--; continue;
+      }
+      isValidChar = 1; //to check for valid characters
+      if (toupper (phrase[left++]) != toupper (phrase[right--])) return NOT_PALINDROME;
    }
-   return (count == 0 || validChar == 0) ? ERR_INVALID : PALINDROME;
+   return (isValidChar) ? PALINDROME : ERR_INVALID;
 }
