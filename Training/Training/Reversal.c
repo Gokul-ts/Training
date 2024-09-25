@@ -7,23 +7,17 @@
 // ------------------------------------------------------------------------------------------------
 #include "Reversal.h"
 #include <string.h>
-#include <stdbool.h>
 #include <ctype.h>
 
 int IsNumPalindrome (int num, long long int* revNum) {
-   bool isNegative = false;
-   if (num < 0) { // special case for negative numbers
-      num = -num;
-      isNegative = true;
-   }
    int org = num;
    long long int rev = 0; //Used for storing reversed number exceeding int range
    while (num != 0) {
       rev = rev * 10 + num % 10;
       num /= 10;
    }
-   *revNum = isNegative == true ? -rev : rev;
-   return (*revNum == org);
+   *revNum = rev;
+   return (org < 0) ? NOT_PALINDROME : (*revNum == org);
 }
 
 int IsStrPalindrome (char* phrase) {
