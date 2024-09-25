@@ -11,7 +11,7 @@
 
 int IsNumPalindrome (int num, long long int* revNum) {
    int org = num;
-   long long int rev = 0; //Used for storing reversed number exceeding int range
+   long long int rev = 0; //to store reversed number exceeding int range
    while (num != 0) {
       rev = rev * 10 + num % 10;
       num /= 10;
@@ -21,8 +21,7 @@ int IsNumPalindrome (int num, long long int* revNum) {
 }
 
 int IsStrPalindrome (char* phrase) {
-   int left = 0, isValidChar = 0;
-   int right = (int)strlen (phrase) - 1;
+   int left = 0, right = (int)strlen (phrase) - 1, isValidChar = 0;
    while (left <= right) {
       if (!isalnum (phrase[left])) {
          left++; continue;
