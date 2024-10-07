@@ -10,14 +10,8 @@
 #include <ctype.h>
 
 int IsNumPalindrome (int num, long long int* revNum) {
-   int org = num;
-   long long int rev = 0; //to store reversed number exceeding int range
-   while (num != 0) {
-      rev = rev * 10 + num % 10;
-      num /= 10;
-   }
-   *revNum = rev;
-   return (org < 0) ? NOT_PALINDROME : (*revNum == org);
+   *revNum = NumReverse (num);
+   return (num < 0) ? NOT_PALINDROME : (*revNum == num);
 }
 
 int IsStrPalindrome (char* phrase) {
@@ -33,4 +27,13 @@ int IsStrPalindrome (char* phrase) {
       if (toupper (phrase[left++]) != toupper (phrase[right--])) return NOT_PALINDROME;
    }
    return (isValidChar) ? PALINDROME : ERR_INVALID;
+}
+
+long long int NumReverse (int num) {
+   long long int rev = 0; //to store reversed number exceeding int range
+   while (num != 0) {
+      rev = rev * 10 + num % 10;
+      num /= 10;
+   }
+   return rev;
 }

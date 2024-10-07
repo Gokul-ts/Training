@@ -22,3 +22,5 @@
 int IsNumPalindrome (int num,long long int* revNum);
 /// <summary>Returns whether the given string is palindrome or not</summary>
 int IsStrPalindrome (char* phrase);
+/// <summary>Returns the input number in reverse</summary>
+long long int NumReverse (int num);
