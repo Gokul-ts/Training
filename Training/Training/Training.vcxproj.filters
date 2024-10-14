@@ -18,5 +18,13 @@
     <ClCompile Include="file.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortAndSearch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SortAndSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
