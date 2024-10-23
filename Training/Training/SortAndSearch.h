@@ -13,7 +13,9 @@
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_YELLOW "\x1b[33m"
 
-/// <summary>Changes the input array into a sorted array</summary>
+/// <summary>Converts the input array into a sorted array</summary>
 void BubbleSort (int arr[], int size);
+/// <summary>Converts the input array into a sorted array</summary>
+void InsertionSort (int arr[], int size);
 /// <summary>Returns the index of key element in an array</summary>
 int BinarySearch (int sortArr[], int key, int size);
