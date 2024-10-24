@@ -56,7 +56,7 @@ int main () {
 int GetUserInput (char* prompt) {
    int number = 0;
    for (;;) {
-      printf ("%s", prompt);
+      if (prompt != "") printf ("%s", prompt);
       char strNum[MAX_DIGIT], * endPtr = NULL,
          * strPtr = fgets (strNum, sizeof (strNum), stdin), * validInput = strchr (strNum, '\n');
       number = strtol (strNum, &endPtr, 10);
