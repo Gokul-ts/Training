@@ -61,7 +61,7 @@ int GetUserInput (char* prompt) {
          * strPtr = fgets (strNum, sizeof (strNum), stdin), * validInput = strchr (strNum, '\n');
       number = strtol (strNum, &endPtr, 10);
       if (validInput == NULL)  while (getchar () != '\n');
-      if (strPtr == NULL || validInput == NULL || (isdigit (strNum[0]) == 0 && strNum[0] != '-') || *endPtr != '\n') {
+      if (strPtr == NULL || validInput == NULL || (!isdigit (strNum[0]) && strNum[0] != '-') || *endPtr != '\n') {
          printf (ANSI_COLOR_RED"Invalid Number!!! Please re-enter\n"ANSI_RESET_ALL);
          continue;
       }
@@ -83,9 +83,8 @@ void SearchAndSort (void(*func)(int[], int)) {
    }
    printf ("\nEnter the elements of the array:\n");
    for (int i = 0; i < size; i++) {
-      char index[] = "[i]";
-      index[1] = i + 48;
-      array[i] = GetUserInput (index);
+      printf ("[%d]", i);
+      array[i] = GetUserInput ("");
    }
    func (array, size);
    printf ("Sorted Array: ");
@@ -113,12 +112,10 @@ void TestCases (void(*func)(int[], int), char* sortType) {
       func (inpArray[i], size);
       printf ("\nSorted Array:    ");
       for (int j = 0; j < size; j++) printf ("%d ", inpArray[i][j]);
-      printf ("\n%s", sortType);
-      printf (CompareArrays (inpArray[i], outArray[i], size) ? ANSI_COLOR_GREEN"PASS"ANSI_RESET_ALL :
+      printf ("\n%s%s", sortType, CompareArrays (inpArray[i], outArray[i], size) ? ANSI_COLOR_GREEN"PASS"ANSI_RESET_ALL :
               ANSI_COLOR_RED"FAIL"ANSI_RESET_ALL);
       int index = BinarySearch (inpArray[i], inpKey[i], size);
-      printf ("\nKey:             %d\nIndex:           %d\nBinary Search:   ", inpKey[i], index);
-      printf (index == outIndex[i] ?
+      printf ("\nKey:             %d\nIndex:           %d\nBinary Search:   %s", inpKey[i], index, index == outIndex[i] ?
               ANSI_COLOR_GREEN"PASS"ANSI_COLOR_YELLOW"\n-------------------------------------------\n"ANSI_RESET_ALL :
               ANSI_COLOR_RED"FAIL"ANSI_COLOR_YELLOW"\n-------------------------------------------\n"ANSI_RESET_ALL);
    }
