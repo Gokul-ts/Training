@@ -7,7 +7,7 @@
 // Header file for SortAndSearch.c program
 // ------------------------------------------------------------------------------------------------
 #define MAX_DIGIT 13
-#define TEST_SIZE 7
+#define TEST_SIZE 6
 #define ANSI_RESET_ALL "\x1b[0m"
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
