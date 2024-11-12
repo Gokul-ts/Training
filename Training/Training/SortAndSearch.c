@@ -8,9 +8,8 @@
 #include "SortAndSearch.h"
 
 void BubbleSort (int arr[], int size) {
-   int swapped;
    for (int i = 0; i < size - 1; i++) {
-      swapped = 0;
+      int swapped = 0;
       for (int j = 0; j < size - i - 1; j++)
          if (arr[j] > arr[j + 1]) {
             int temp = arr[j];
@@ -35,10 +34,7 @@ int BinarySearch (int sortArr[], int key, int size) {
    int low = 0, high = size - 1, result = -1;
    while (low <= high) {
       int mid = low + (high - low) / 2;
-      if (sortArr[mid] == key) {
-         result = mid;
-         high = mid - 1;
-      }
+      if (sortArr[mid] == key) result = mid;
       if (sortArr[mid] < key) low = mid + 1;
       else high = mid - 1;
    }
