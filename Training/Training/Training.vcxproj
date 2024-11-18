@@ -129,6 +129,18 @@
   <ItemGroup>
     <ClCompile Include="file.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="input1.txt" />
+    <Text Include="input2.txt" />
+    <Text Include="input3.txt" />
+    <Text Include="input4.txt" />
+    <Text Include="input5.txt" />
+    <Text Include="output1.txt" />
+    <Text Include="output2.txt" />
+    <Text Include="output3.txt" />
+    <Text Include="output4.txt" />
+    <Text Include="output5.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
