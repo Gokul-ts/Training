@@ -107,13 +107,15 @@ int main (int argc, char** argv) {
    }
    for (int i = 0; i < NTESTS; i++) {
       char inpPath[MAX_PATH], outPath[MAX_PATH];
-      sprintf (inpPath, "input%d.txt", i + 1);
-      sprintf (outPath, "output%d.txt", i + 1);
+      sprintf (inpPath, "TestCases\\Input%d.txt", i + 1);
+      sprintf (outPath, "TestCases\\ExpOutput%d.txt", i + 1);
       if (ExecProgram (argv[1], inpPath, outPath) != 0)  // change the name of the input and output files in each set.
          printf ("Error executing test %d\n", i + 1);
       else {
          int errBit = 0, errBitValue = 0, result = Compare_Files (outPath, &errBit, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
-         if (result) printf ("No error testing %s\n", inpPath);
+         if (result) { 
+            sprintf (inpPath, "Input%d.txt", i + 1);
+            printf ("No error testing %s\n", inpPath); }
          else if (!result) printf ("Error at bit no. %d in %s\nExpected: %d Actual: %d\n", errBit, inpPath, crtBitValue, errBitValue);
          else printf ("Error opening file %d\n", i + 1);
       }

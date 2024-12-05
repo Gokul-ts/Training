@@ -3,15 +3,16 @@
 #include <string.h>
 #include <windows.h>
 
-// Define states of the Mealy machine
+/// <summary> states of the Mealy machine
+/// A state transition diagram is attached for clear understanding </summary>
 typedef enum {
    S0,  // Initial state
    S1,  // After '0'
    S2,  // After '01'
    S3,  // After '011'
-   A1,
-   A2,
-   A3
+   A1,  // After '1'
+   A2,  // After '11'
+   A3   // After '110'
 } State;
 
 void Mealy (char inpPath[], char outPath[]);
@@ -52,55 +53,55 @@ State NextMealyState (State currentState, int input, int* output) {
             return S1;  // Transition to S1 after '0'
          } else {
             *output = 0;
-            return A1;  // Stay in S0 if input is '1'
+            return A1;  // Transition to A1 after '1' 
          }
       case S1:
          if (input == 1) {
             *output = 0;
-            return S2;  // Transition to S2 after '01'
+            return S2;  // Move to S2 after recognizing '01'
          } else {
             *output = 0;
             return S1;  // Stay in S1 if input is '0'
          }
       case S2:
          if (input == 1) {
-            *output = 0;  // Output '1' upon seeing '011'
-            return S3;    // Move to S3 after recognizing '011'
+            *output = 0;  
+            return S3;  // Move to S3 after recognizing '011'
          } else {
             *output = 0;
             return S1;  // Return to S1 if input is '0'
          }
       case S3:
          if (input == 0) {
-            *output = 1;
-            return A3;  // Reset to S0 after recognizing '011'
+            *output = 1;  // Output '1' upon seeing '0110'
+            return A3;  // Move to A3 after recognizing '0110'
          } else {
             *output = 0;
-            return A2;  // Return to S1 if input is '0'
+            return A2;  // Return to A2 if input is '1'
          }
       case A1:
          if (input == 1) {
             *output = 0;
-            return A2;
+            return A2;  // Move to A2 after recognizing '11'
          } else {
             *output = 0;
-            return S1;
+            return S1;  // Move to S1 if input is '0'
          }
       case A2:
          if (input == 0) {
             *output = 0;
-            return A3;
+            return A3;  // Move to A3 after recognizing '110'
          } else {
             *output = 0;
-            return A2;
+            return A2;  // Stay in A2 if input is '1'
          }
       case A3:
          if (input == 1) {
-            *output = 1;
-            return S2;
+            *output = 1;  // Output '1' upon seeing '1101'
+            return S2;  // Move to S2 after recognizing '1101'
          } else {
             *output = 0;
-            return S1;
+            return S1;  // Move to S1 if input is '0'
          }
    }
    return S0;  // Default return to initial state
