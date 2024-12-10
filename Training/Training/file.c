@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <io.h>
+#include <stdbool.h>
 
 #define ANSI_RESET_ALL "\x1b[0m"
 #define ANSI_COLOR_RED "\x1b[31m"
@@ -15,15 +16,16 @@
 #define ANSI_COLOR_YELLOW "\x1b[33m"
 #define ROW 8
 #define COLUMN 8
+#define ERR -1
 
 /// <summary>This function prints the input into both console and text file</summary>
 void Print (const wchar_t* const fText, FILE* file);
 /// <summary>Returns whether the two input files are equal or not</summary>
-int Compare_Files (const char* file1, const char* file2);
+bool AreFilesEqual (const char* file1, const char* file2, int* errorCode);
 
 int main () {
    int prevMode = _setmode (_fileno (stdout), _O_U8TEXT);
-   FILE* file = fopen ("test_file.txt", "w, ccs=UTF-8");
+   FILE* file = fopen ("test_file.txt", "w, ccs=UTF-8"); // To open the file in UTF-8 encoding
    if (file == NULL) {
       perror (ANSI_COLOR_RED "Error opening file" ANSI_RESET_ALL);
       return 1;
@@ -56,16 +58,20 @@ int main () {
    }
    Print (L"\n┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n", file);
    fclose (file);
-   int comp_Result = Compare_Files ("test_file.txt", "existing_file.txt");
-   wprintf (comp_Result == -1 ? ANSI_COLOR_YELLOW L"Error opening file" ANSI_RESET_ALL :
-            comp_Result ? ANSI_COLOR_GREEN L"Test case passed" ANSI_RESET_ALL :
+   int errorCode = 0;
+   bool isEqual = AreFilesEqual ("test_file.txt", "existing_file.txt", &errorCode);
+   wprintf (errorCode == -1 ? ANSI_COLOR_YELLOW L"Error opening file" ANSI_RESET_ALL :
+            isEqual ? ANSI_COLOR_GREEN L"Test case passed" ANSI_RESET_ALL :
             ANSI_COLOR_RED L"Test case failed" ANSI_RESET_ALL);
    return 0;
 }
 
-int Compare_Files (const char* file1, const char* file2) {
+bool AreFilesEqual (const char* file1, const char* file2, int* errorCode) {
    FILE* f1 = fopen (file1, "r"), * f2 = fopen (file2, "r");
-   if (f1 == NULL || f2 == NULL) return -1;
+   if (f1 == NULL || f2 == NULL) {
+      *errorCode = ERR; // error opening file
+      return 0;
+   }
    char ch1, ch2;
    int result = 1;
    while (((ch1 = fgetc (f1)) != EOF) && ((ch2 = fgetc (f2)) != EOF))
