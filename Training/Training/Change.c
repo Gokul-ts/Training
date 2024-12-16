@@ -6,35 +6,30 @@
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
+#define ERR -1
 
-void ChangeRequired (int* balance, int* change10, int* change5, int* change2, int* change1) {
-   int num = *balance;
-   if (num >= 10) {
-      *change10 = num / 10;
-      num %= 10;
+void ChangeRequired (int* balance, int* expChanges) {
+   int changes[] = { 10,5,2,1 }, num = *balance,
+      arrSize = sizeof (changes) / sizeof (changes[0]);
+   if (num < 0) {
+      for (int i = 0; i < arrSize; i++) expChanges[i] = ERR;
+      return;
    }
-   if (num >= 5) {
-      *change5 = num / 5;
-      num %= 5;
-   }
-   if (num >= 2) {
-      *change2 = num / 2;
-      num %= 2;
-   }
-   if (num >= 1) {
-      *change1 = num / 1;
-      num %= 1;
+   for (int i = 0; i < arrSize; i++) {
+      expChanges[i] = num / changes[i];
+      num %= changes[i];
    }
 }
 
 void main () {
-   int balances[] = { 5,18,1,43,500 }, expResult[][4] = { { 0,1,0,0 },{ 1,1,1,1 },{ 0,0,0,1 },{ 4,0,1,1 },{ 50,0,0,0} };
+   int balances[] = { 5,18,1,43,500,-1,0 }, expResult[][4] = { { 0,1,0,0 },{ 1,1,1,1 },{ 0,0,0,1 },{ 4,0,1,1 },{ 50,0,0,0 },{-1,-1,-1,-1},{ 0,0,0,0 } },
+      arrSize = sizeof (balances) / sizeof (balances[0]), expChanges[] = { 0,0,0,0 };
    printf ("TestCases:\n");
-   for (int i = 0; i < 5; i++) {
-      int change10 = 0, change5 = 0, change2 = 0, change1 = 0;
-      ChangeRequired (&balances[i], &change10, &change5, &change2, &change1);
-      if (expResult[i][0] == change10 && expResult[i][1] == change5 && expResult[i][2] == change2 && expResult[i][3] == change1) {
-         printf ("Pass\n");
-      } else printf ("Fail\n");
+   for (int i = 0; i < arrSize; i++) {
+      ChangeRequired (&balances[i], expChanges);
+      if (expResult[i][0] == expChanges[0] && expResult[i][1] == expChanges[1] && expResult[i][2] == expChanges[2] && expResult[i][3] == expChanges[3]) {
+         printf ("%d.Pass\n",i+1);
+      } else printf ("%d.Fail!!! For a balance of %d, the following coins were returned:Rs.10(%d),Rs.5(%d),Rs.2(%d),Rs.1(%d)\n",
+                     i + 1,balances[i], expChanges[0], expChanges[1], expChanges[2], expChanges[3]);
    }
 }
