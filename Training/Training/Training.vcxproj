@@ -129,6 +129,21 @@
   <ItemGroup>
     <ClCompile Include="file.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="StateTransitionDiagram_Mealy.JPG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TestCases\ExpOutput1.txt" />
+    <Text Include="TestCases\ExpOutput2.txt" />
+    <Text Include="TestCases\ExpOutput3.txt" />
+    <Text Include="TestCases\ExpOutput4.txt" />
+    <Text Include="TestCases\ExpOutput5.txt" />
+    <Text Include="TestCases\Input1.txt" />
+    <Text Include="TestCases\Input2.txt" />
+    <Text Include="TestCases\Input3.txt" />
+    <Text Include="TestCases\Input4.txt" />
+    <Text Include="TestCases\Input5.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
