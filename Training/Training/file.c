@@ -107,8 +107,8 @@ int main (int argc, char** argv) {
    }
    for (int i = 0; i < NTESTS; i++) {
       char inpPath[MAX_PATH], outPath[MAX_PATH];
-      sprintf (inpPath, "TestCases\\Input%d.txt", i + 1);
-      sprintf (outPath, "TestCases\\ExpOutput%d.txt", i + 1);
+      sprintf (inpPath, "Input%d.txt", i + 1);
+      sprintf (outPath, "ExpOutput%d.txt", i + 1);
       if (ExecProgram (argv[1], inpPath, outPath) != 0)  // change the name of the input and output files in each set.
          printf ("Error executing test %d\n", i + 1);
       else {
