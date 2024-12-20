@@ -1,6 +1,7 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
-// Copyright Gokul TS (c) Metamation India.
+// Copyright (c) Metamation India.
+// Gokul TS
 // ------------------------------------------------------------------
 // ComplexNumber.c
 // program that contains the definition of complex number operations.
