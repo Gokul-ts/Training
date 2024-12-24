@@ -18,20 +18,18 @@ bool IsChangeRequired (int balance, int expChanges[], int changes[], int size) {
 }
 
 void TestFunction (int balances[], int expResult[][4], int testArrSize, int changes[]) {
-   printf ("TestCases:\n");
+   printf ("TestCase:\n");
    for (int i = 0; i < testArrSize; i++) {
       int expChanges[] = { 0,0,0,0 }, balArrSize = sizeof (expChanges) / sizeof (expChanges[0]);
-      bool isRequired = IsChangeRequired (balances[i], expChanges, changes, balArrSize);
-      if (!isRequired)  printf ("%d.Pass.Input is negative\n", i + 1);
-      else if ((expResult[i][0] == expChanges[0]) && (expResult[i][1] == expChanges[1]) &&
-               (expResult[i][2] == expChanges[2]) && (expResult[i][3] == expChanges[3]))
-         printf ("%d.Pass\n", i + 1);
-      else {
-         printf ("%d.Fail!!! For a balance of %d, the following coins were returned:Rs.10(%d),Rs.5(%d),Rs.2(%d),Rs.1(%d)\n",
-                 i + 1, balances[i], expChanges[0], expChanges[1], expChanges[2], expChanges[3]);
-         break;
+      IsChangeRequired (balances[i], expChanges, changes, balArrSize);
+      if ((expResult[i][0] != expChanges[0]) || (expResult[i][1] != expChanges[1]) ||
+          (expResult[i][2] != expChanges[2]) || (expResult[i][3] != expChanges[3])) {
+         printf ("Fail!!! For a balance of %d, the following coins were returned:Rs.10(%d),Rs.5(%d),Rs.2(%d),Rs.1(%d)\n",
+                 balances[i], expChanges[0], expChanges[1], expChanges[2], expChanges[3]);
+         return;
       }
    }
+   printf ("Pass\n");
 }
 
 void main () {
