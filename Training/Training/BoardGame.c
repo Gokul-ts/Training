@@ -57,16 +57,14 @@ void main () {
       GetPlayerInput (currentPlayer, *board);
       system ("cls");
       PrintBoard (board);
-      if (i > 3) {
-         int result = CheckWin (board, currentPlayer);
-         if (result) {
+      if (i > 3)
+         if (CheckWin (board, currentPlayer)) {
             printf ("Player %c is the Winner!!!\n", currentPlayer);
             return;
-         } else if (!result && i > 7) {
+         } else if (i == 8) {
             printf ("Match Draw!!!\n");
             return;
          }
-      }
-      currentPlayer ^= ('X' ^ 'O');
+         currentPlayer ^= ('X' ^ 'O');
    }
 }
