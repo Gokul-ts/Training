@@ -127,22 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="file.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="StateTransitionDiagram_Mealy.JPG" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ExpOutput1.txt" />
-    <Text Include="ExpOutput2.txt" />
-    <Text Include="ExpOutput3.txt" />
-    <Text Include="ExpOutput4.txt" />
-    <Text Include="ExpOutput5.txt" />
-    <Text Include="Input1.txt" />
-    <Text Include="Input2.txt" />
-    <Text Include="Input3.txt" />
-    <Text Include="Input4.txt" />
-    <Text Include="Input5.txt" />
+    <ClCompile Include="harness.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

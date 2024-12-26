@@ -1,14 +1,16 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
-// Gokul TS Copyright (c) Metamation India.
+// Copyright (c) Metamation India.
+// Gokul TS
 // ------------------------------------------------------------------
-// file.c
+// harness.c
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
 #define _CRT_SECURE_NO_WARNINGS  1
 #include <windows.h>
 #include <stdio.h>
 #include <malloc.h>
+#include <io.h>
 
 /// <summary>
 /// This function will execute the FSM providing the input and output file names as arguments
@@ -67,26 +69,34 @@ int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* out
 }
 
 /// <summary>
-/// This function compares two files and returns the result
+/// Returns whether the given two files are equal or not
 /// </summary>
 /// <param name="file"></param>
 /// <param name="errBit"></param>
 /// <param name="errBitValue"></param>
 /// <returns></returns>
-int Compare_Files (char* file, int* errBit, int* errBitValue) {
-   FILE* f1 = fopen ("temp_file.txt", "r"), * f2 = fopen (file, "r");
+int Compare_Files (char* file, char* tempOutPath, int* errBit, int* errBitValue) {
+   FILE* f1 = fopen (tempOutPath, "r"), * f2 = fopen (file, "r");
    if (f1 == NULL || f2 == NULL) return -1;
-   char ch1, ch2;
-   int result = 1; // 1 means files are identical
-   while (((ch1 = fgetc (f1)) != EOF) && ((ch2 = fgetc (f2)) != EOF)) {
+   int refFileSize = filelength (fileno (f1)) + 1,
+      outFileSize = filelength (fileno (f2)) + 1, j = 0, result = 1; // 1 means file are equal
+   char* refFileString = (char*)malloc (refFileSize * sizeof (char)),
+      * outFileString = (char*)malloc (outFileSize * sizeof (char));
+   fgets (refFileString, refFileSize, f1);
+   fgets (outFileString, outFileSize, f2);
+   char refFileChar = refFileString[j], outFileChar = outFileString[j];
+   while (refFileChar != '\0' || outFileChar != '\0') {
       (*errBit)++;
-      if (ch1 != ch2) {
-         result = 0; // Files are different
-         *errBitValue = ch1 - '0';
+      if (refFileChar != outFileChar) {
+         result = 0; // 0 means file are not equal
+         *errBitValue = refFileChar - '0';
          break;
       }
+      refFileChar = refFileString[++j];
+      outFileChar = outFileString[j];
    }
-   if (fgetc (f1) != EOF || fgetc (f2) != EOF) result = 0; // Files are different
+   free (refFileString);
+   free (outFileString);
    fclose (f1);
    fclose (f2);
    return result;
@@ -106,17 +116,16 @@ int main (int argc, char** argv) {
       return -1;
    }
    for (int i = 0; i < NTESTS; i++) {
-      char inpPath[MAX_PATH], outPath[MAX_PATH];
-      sprintf (inpPath, "Input%d.txt", i + 1);
-      sprintf (outPath, "ExpOutput%d.txt", i + 1);
-      if (ExecProgram (argv[1], inpPath, outPath) != 0)  // change the name of the input and output files in each set.
+      char inpPath[MAX_PATH], outPath[MAX_PATH], * tempOutPath = "C:\\etc\\temp.txt";
+      sprintf (inpPath, "TData\\Input%d.txt", i + 1);
+      sprintf (outPath, "TData\\ExpOutput%d.txt", i + 1);
+      if (ExecProgram (argv[1], inpPath, tempOutPath) != 0)  // change the name of the input and output files in each set.
          printf ("Error executing test %d\n", i + 1);
       else {
-         int errBit = 0, errBitValue = 0, result = Compare_Files (outPath, &errBit, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
-         if (result) { 
-            sprintf (inpPath, "Input%d.txt", i + 1);
-            printf ("No error testing %s\n", inpPath); }
-         else if (!result) printf ("Error at bit no. %d in %s\nExpected: %d Actual: %d\n", errBit, inpPath, crtBitValue, errBitValue);
+         int errBit = 0, errBitValue = 0, result = Compare_Files (outPath, tempOutPath, &errBit, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
+         sprintf (inpPath, "Input%d.txt", i + 1);
+         if (result) printf ("No error testing %s\n", inpPath);
+         else if (!result) printf ("Failure at bit no. %d in %s\nExpected: %d Actual: %d\n", errBit, inpPath, crtBitValue, errBitValue);
          else printf ("Error opening file %d\n", i + 1);
       }
    }
