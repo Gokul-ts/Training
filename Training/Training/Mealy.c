@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
+#include <io.h>
 
 /// <summary> states of the Mealy machine
 /// A state transition diagram is attached for clear understanding </summary>
@@ -19,26 +20,27 @@ void Mealy (char inpPath[], char outPath[]);
 State NextMealyState (State currentState, int input, int* output);
 
 void main (int argc, char* argv[]) {
-   char inpFilePath[MAX_PATH], outFilePath[MAX_PATH];
-   strcpy (inpFilePath, argv[1]);
-   strcpy (outFilePath, argv[2]);
-   Mealy (inpFilePath, outFilePath);
+   Mealy (argv[1], argv[2]);
 }
 
 // Function to open input file and create a new file and store the result
 void Mealy (char inpPath[], char outPath[]) {
-   char ch;
    FILE* inpTestFile = fopen (inpPath, "r"), * outTestFile = fopen (outPath, "w");
    if (inpTestFile == NULL || outTestFile == NULL) {
       printf ("Error opening file");
       return;
    }
    State currentState = S0;
-   int output = 0;
-   while ((ch = fgetc (inpTestFile)) != EOF) {
-      currentState = NextMealyState (currentState, ch - '0', &output);
+   int output = 0, i = 0, inpFileSize = filelength (fileno (inpTestFile)) + 1;
+   char* inpFileString = (char*)malloc (inpFileSize * sizeof (char));
+   fgets (inpFileString, inpFileSize, inpTestFile);
+   char inpFileChar = inpFileString[i];
+   while (inpFileChar != '\0') {
+      currentState = NextMealyState (currentState, inpFileChar - '0', &output);
       fprintf (outTestFile, "%d", output);
+      inpFileChar = inpFileString[++i];
    }
+   free (inpFileString);
    fclose (inpTestFile);
    fclose (outTestFile);
 }
