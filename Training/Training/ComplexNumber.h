@@ -13,12 +13,12 @@ typedef struct ComplexNumber {
 }CompNum;
 
 /// <summary>Returns the sum of two complex numbers</summary>
-CompNum Op_Add (CompNum compNum1, CompNum compNum2);
+CompNum Op_Add (CompNum CompNum1, CompNum CompNum2);
 /// <summary>Returns the subtraction of two complex numbers</summary>
-CompNum Op_Sub (CompNum compNum1, CompNum compNum2);
+CompNum Op_Sub (CompNum CompNum1, CompNum CompNum2);
 /// <summary>Returns the product of two complex numbers</summary>
-CompNum Op_Mul (CompNum compNum1, CompNum compNum2);
+CompNum Op_Mul (CompNum CompNum1, CompNum CompNum2);
 /// <summary>Returns the modulus of a complex number</summary>
-float Op_Mod (CompNum compNum);
+float Op_Mod (CompNum CompNumber);
 /// <summary>Returns the conjugate of a complex number</summary>
-CompNum Op_Conj (CompNum comp_Num);
+CompNum Op_Conj (CompNum CompNumber);
