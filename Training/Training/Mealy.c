@@ -31,14 +31,16 @@ void Mealy (char inpPath[], char outPath[]) {
       return;
    }
    State currentState = S0;
-   int output = 0, i = 0, inpFileSize = filelength (fileno (inpTestFile)) + 1;
+   int output = 0, inpFileSize = filelength (fileno (inpTestFile)) + 1;
    char* inpFileString = (char*)malloc (inpFileSize * sizeof (char));
+   if (inpFileString == NULL) {
+      printf ("Memory allocation failed");
+      return;
+   }
    fgets (inpFileString, inpFileSize, inpTestFile);
-   char inpFileChar = inpFileString[i];
-   while (inpFileChar != '\0') {
-      currentState = NextMealyState (currentState, inpFileChar - '0', &output);
+   for (int i = 0; i < inpFileSize - 1; i++) {
+      currentState = NextMealyState (currentState, inpFileString[i] - '0', &output);
       fprintf (outTestFile, "%d", output);
-      inpFileChar = inpFileString[++i];
    }
    free (inpFileString);
    fclose (inpTestFile);

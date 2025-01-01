@@ -7,6 +7,9 @@
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
 #define _CRT_SECURE_NO_WARNINGS  1
+#define F_OPEN_ERR -1
+#define F_MEMORY_ERR -2
+#define F_EMPTY -3
 #include <windows.h>
 #include <stdio.h>
 #include <malloc.h>
@@ -68,26 +71,25 @@ int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* out
 
 }
 
-/// <summary> Returns whether the given two files are equal or not </summary>
-int CompareFiles (char* file, char* tempOutPath, int* errBit, int* errBitValue) {
+/// <summary> Returns whether the given two files are equal or not otherwise returns error code if any</summary>
+int CompareFiles (char* file, char* tempOutPath, int* errBitNo, int* errBitValue) {
    FILE* f1 = fopen (tempOutPath, "r"), * f2 = fopen (file, "r");
-   if (f1 == NULL || f2 == NULL) return -1;
+   if (f1 == NULL || f2 == NULL) return F_OPEN_ERR;
    int refFileSize = filelength (fileno (f1)) + 1,
       outFileSize = filelength (fileno (f2)) + 1, j = 0, result = 1; // 1 means files are equal
+   if (refFileSize == 1 || outFileSize == 1) return F_EMPTY;
    char* refFileString = (char*)malloc (refFileSize * sizeof (char)),
       * outFileString = (char*)malloc (outFileSize * sizeof (char));
+   if (refFileString == NULL || outFileString == NULL) return F_MEMORY_ERR;
    fgets (refFileString, refFileSize, f1);
    fgets (outFileString, outFileSize, f2);
-   char refFileChar = refFileString[j], outFileChar = outFileString[j];
-   while (refFileChar != '\0' || outFileChar != '\0') {
-      (*errBit)++;
-      if (refFileChar != outFileChar) {
+   for (int i = 0; i < refFileSize - 1; i++) {
+      (*errBitNo)++;
+      if (refFileString[i] != outFileString[i]) {
          result = 0; // 0 means files are not equal
-         *errBitValue = refFileChar - '0';
+         *errBitValue = refFileString[i] - '0';
          break;
       }
-      refFileChar = refFileString[++j];
-      outFileChar = outFileString[j];
    }
    free (refFileString);
    free (outFileString);
@@ -116,11 +118,24 @@ int main (int argc, char** argv) {
       if (ExecProgram (argv[1], inpPath, tempOutPath) != 0)  // change the name of the input and output files in each set.
          printf ("Error executing test %d\n", i + 1);
       else {
-         int errBit = 0, errBitValue = 0, result = CompareFiles (outPath, tempOutPath, &errBit, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
+         int errBitNo = 0, errBitValue = 0, result = CompareFiles (outPath, tempOutPath, &errBitNo, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
          sprintf (inpPath, "Input%d.txt", i + 1);
-         if (result) printf ("No error testing %s\n", inpPath);
-         else if (!result) printf ("Failure at bit no. %d in %s\nExpected: %d Actual: %d\n", errBit, inpPath, crtBitValue, errBitValue);
-         else printf ("Error opening file %d\n", i + 1);
+         switch (result) {
+            case 1:
+               printf ("No error testing %s\n", inpPath);
+               break;
+            case 0:
+               printf ("Failure at bit no. %d in %s\nExpected: %d Actual: %d\n", errBitNo, inpPath, crtBitValue, errBitValue);
+               break;
+            case F_OPEN_ERR:
+               printf ("Error opening file %s\n", inpPath);
+               break;
+            case F_MEMORY_ERR:
+               printf ("Error allocating memory for file %s\n", inpPath);
+               break;
+            default:
+               printf ("File %s is empty\n", inpPath);
+         }
       }
    }
    return 0;
