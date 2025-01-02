@@ -20,7 +20,11 @@ void Mealy (char inpPath[], char outPath[]);
 State NextMealyState (State currentState, int input, int* output);
 
 void main (int argc, char* argv[]) {
-   Mealy (argv[1], argv[2]);
+   if (argc == 3) {
+      Mealy (argv[1], argv[2]);
+   } else {
+      printf ("Usage: %s <Input File name> <Output File name>\n,", argv[0]);
+   }
 }
 
 // Function to open input file and create a new file and store the result
