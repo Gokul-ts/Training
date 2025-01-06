@@ -9,46 +9,10 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="file.c">
+    <ClCompile Include="harness.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="input1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="input2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="input3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="input4.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="input5.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="output1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="output2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="output3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="output4.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="output5.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

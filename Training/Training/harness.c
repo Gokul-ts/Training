@@ -7,9 +7,7 @@
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
 #define _CRT_SECURE_NO_WARNINGS  1
-#define F_OPEN_ERR -1
-#define F_MEMORY_ERR -2
-#define F_EMPTY -3
+#define NTESTS 5 
 #include <windows.h>
 #include <stdio.h>
 #include <malloc.h>
@@ -71,31 +69,43 @@ int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* out
 
 }
 
-/// <summary> Returns whether the given two files are equal or not otherwise returns error code if any</summary>
-int CompareFiles (char* file, char* tempOutPath, int* errBitNo, int* errBitValue) {
-   FILE* f1 = fopen (tempOutPath, "r"), * f2 = fopen (file, "r");
-   if (f1 == NULL || f2 == NULL) return F_OPEN_ERR;
-   int refFileSize = filelength (fileno (f1)) + 1,
-      outFileSize = filelength (fileno (f2)) + 1, j = 0, result = 1; // 1 means files are equal
-   if (refFileSize == 1 || outFileSize == 1) return F_EMPTY;
-   char* refFileString = (char*)malloc (refFileSize * sizeof (char)),
-      * outFileString = (char*)malloc (outFileSize * sizeof (char));
-   if (refFileString == NULL || outFileString == NULL) return F_MEMORY_ERR;
-   fgets (refFileString, refFileSize, f1);
-   fgets (outFileString, outFileSize, f2);
-   for (int i = 0; i < refFileSize - 1; i++) {
-      (*errBitNo)++;
-      if (refFileString[i] != outFileString[i]) {
-         result = 0; // 0 means files are not equal
-         *errBitValue = refFileString[i] - '0';
-         break;
+/// <summary> Prints the result whether two files are equal or errors if any </summary>
+void CheckResult (char* expOutPath, char* tempOutPath, char* inpFileName) {
+   FILE* f1 = fopen (tempOutPath, "r"), * f2 = fopen (expOutPath, "r");
+   if (f1 == NULL || f2 == NULL)
+      printf ("Error opening file!!!\n");
+   else {
+      int refFileSize = filelength (fileno (f1)) + 1,
+         outFileSize = filelength (fileno (f2)) + 1;
+      if (refFileSize == 1 || outFileSize == 1)
+         printf ("File is empty!!!\n");
+      else if (refFileSize != outFileSize)
+         printf ("File lengths are different!!!\n");
+      else {
+         char* refFileString = (char*)malloc (refFileSize * sizeof (char)),
+            * outFileString = (char*)malloc (outFileSize * sizeof (char));
+         if (refFileString == NULL || outFileString == NULL)
+            printf ("Error allocating memory!!!\n");
+         else {
+            fgets (refFileString, refFileSize, f1);
+            fgets (outFileString, outFileSize, f2);
+            int i, errBitNo = 0;
+            for (i = 0; i < refFileSize - 1; i++) {
+               errBitNo++;
+               if (refFileString[i] != outFileString[i]) {
+                  int errBitValue = refFileString[i] - '0';
+                  printf ("Failure at bit no. %d in %s\nExpected: %d Actual: %d\n", errBitNo, inpFileName, !errBitValue, errBitValue);
+                  break;
+               }
+            }
+            if (refFileString[i] == outFileString[i]) printf ("No error testing %s\n", inpFileName);
+            free (refFileString);
+            free (outFileString);
+         }
       }
+      fclose (f1);
+      fclose (f2);
    }
-   free (refFileString);
-   free (outFileString);
-   fclose (f1);
-   fclose (f2);
-   return result;
 }
 
 /// <summary>
@@ -105,8 +115,6 @@ int CompareFiles (char* file, char* tempOutPath, int* errBitNo, int* errBitValue
 /// <param name="argv">argv[1] is the name of the FSM</param>
 /// <returns></returns>
 int main (int argc, char** argv) {
-#define NTESTS 5                    // change this according to the number of tests you design. The more unique and relevant test patterns, the more complete your testing.
-   printf ("FSM Test Harness\n");
    if (argc != 2) {
       printf ("Usage: %s <FSM executable name>\n,", argv[0]);
       return -1;
@@ -115,27 +123,12 @@ int main (int argc, char** argv) {
       char inpPath[MAX_PATH], outPath[MAX_PATH], * tempOutPath = "C:\\etc\\temp.txt";
       sprintf (inpPath, "TData\\Input%d.txt", i + 1);
       sprintf (outPath, "TData\\ExpOutput%d.txt", i + 1);
-      if (ExecProgram (argv[1], inpPath, tempOutPath) != 0)  // change the name of the input and output files in each set.
+      if (ExecProgram (argv[1], inpPath, tempOutPath) != 0)  // changes the name of the input and output files in each set.
          printf ("Error executing test %d\n", i + 1);
       else {
-         int errBitNo = 0, errBitValue = 0, result = CompareFiles (outPath, tempOutPath, &errBitNo, &errBitValue), crtBitValue = errBitValue ? 0 : 1;
-         sprintf (inpPath, "Input%d.txt", i + 1);
-         switch (result) {
-            case 1:
-               printf ("No error testing %s\n", inpPath);
-               break;
-            case 0:
-               printf ("Failure at bit no. %d in %s\nExpected: %d Actual: %d\n", errBitNo, inpPath, crtBitValue, errBitValue);
-               break;
-            case F_OPEN_ERR:
-               printf ("Error opening file %s\n", inpPath);
-               break;
-            case F_MEMORY_ERR:
-               printf ("Error allocating memory for file %s\n", inpPath);
-               break;
-            default:
-               printf ("File %s is empty\n", inpPath);
-         }
+         char* inpFileName = strtok (inpPath, "\\");
+         inpFileName = strtok (NULL, "\\");
+         CheckResult (outPath, tempOutPath, inpFileName);
       }
    }
    return 0;

@@ -14,17 +14,15 @@ typedef enum {
    A1,  // After '1'
    A2,  // After '11'
    A3,  // After '110'
+   ERRSTATE // Error state
 } State;
 
 void Mealy (char inpPath[], char outPath[]);
 State NextMealyState (State currentState, int input, int* output);
 
 void main (int argc, char* argv[]) {
-   if (argc == 3) {
-      Mealy (argv[1], argv[2]);
-   } else {
-      printf ("Usage: %s <Input File name> <Output File name>\n,", argv[0]);
-   }
+   if (argc == 3) Mealy (argv[1], argv[2]);
+   else printf ("Usage: %s <Input File name> <Output File name>\n,", argv[0]);
 }
 
 // Function to open input file and create a new file and store the result
@@ -44,6 +42,10 @@ void Mealy (char inpPath[], char outPath[]) {
    fgets (inpFileString, inpFileSize, inpTestFile);
    for (int i = 0; i < inpFileSize - 1; i++) {
       currentState = NextMealyState (currentState, inpFileString[i] - '0', &output);
+      if (currentState == ERRSTATE) { // to check whether error state is reached
+         printf ("ERROR!!! Invalid state\n");
+         break;
+      }
       fprintf (outTestFile, "%d", output);
    }
    free (inpFileString);
@@ -94,6 +96,7 @@ State NextMealyState (State currentState, int input, int* output) {
          }
          return S1;
       default:
-         return S0;  // Default return to initial state
+         return ERRSTATE;  // Default return to error state
    }
+   return S0; // Return to initial state
 }
