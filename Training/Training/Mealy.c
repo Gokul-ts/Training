@@ -98,5 +98,4 @@ State NextMealyState (State currentState, int input, int* output) {
       default:
          return ERRSTATE;  // Default return to error state
    }
-   return S0; // Return to initial state
 }
