@@ -14,9 +14,9 @@
 #include "ComplexNumber.h"
 
 CompNum GetUserInput (char* prompt) { // gets the complex number from user
-   CompNum CompNumber = { 0.0,0.0 };
+   CompNum compNumber = { 0.0,0.0 };
    printf ("\nEnter real and imaginary parts of complex number%s:\n", prompt);
-   float* fltArr[] = { &CompNumber.realPart ,&CompNumber.imagPart };
+   float* fltArr[] = { &compNumber.RealPart ,&compNumber.ImagPart };
    char* partArr[] = { "Real:","Imag:" };
    for (int i = 0; i < 2; i++) {
       char c;
@@ -26,36 +26,36 @@ CompNum GetUserInput (char* prompt) { // gets the complex number from user
          while (getchar () != '\n');
       }
    }
-   return CompNumber;
+   return compNumber;
 }
 
-void printComplex (CompNum CompNumber, char* funcName) { // prints Complex number to the console with specified function name
-   printf ("\n%s Result: %f %c %fi\n", funcName, CompNumber.realPart, (CompNumber.imagPart >= 0) ? '+' : '-', fabs (CompNumber.imagPart));
+void printComplex (CompNum compNumber, char* funcName) { // prints Complex number to the console with specified function name
+   printf ("\n%s Result: %f %c %fi\n", funcName, compNumber.RealPart, (compNumber.ImagPart >= 0) ? '+' : '-', fabs (compNumber.ImagPart));
 }
 
-bool IsEqual (CompNum Num1, CompNum Num2) {
-   return (Num1.realPart == Num2.realPart && Num1.imagPart == Num2.imagPart) ? true : false;
+bool IsEqual (CompNum num1, CompNum num2) {
+   return (num1.RealPart == num2.RealPart && num1.ImagPart == num2.ImagPart) ? true : false;
 }
 
 void TestCases () { // Runs test cases
-   CompNum CompNums1[] = { { 10.17f,-19.80f } ,{25,10} ,{-1,894},{-111,75} },
-      CompNums2[] = { { -18010.25f,-10219.48f},{10,25},{-718,29},{125,45} },
-      Add[] = { { -18000.080078f,-10239.280273f },{35,35},{-719,923},{14,120} },
-      Sub[] = { { 18020.419922f,10199.680664f },{15,-15},{717,865},{-236,30} },
-      Mul[] = { { -385509.937500f,252670.812500f },{0,725},{-25208,-641921},{-17250,4380} },
-      Conj1[] = { { 10.17f,19.799999f },{25,-10},{-1,-894},{-111,-75} },
-      Conj2[] = { { -18010.25f,10219.480469f },{10,-25},{-718,-29},{125,-45} };
+   CompNum compNums1[] = { { 10.17f,-19.80f } ,{25,10} ,{-1,894},{-111,75} },
+      compNums2[] = { { -18010.25f,-10219.48f},{10,25},{-718,29},{125,45} },
+      add[] = { { -18000.080078f,-10239.280273f },{35,35},{-719,923},{14,120} },
+      sub[] = { { 18020.419922f,10199.680664f },{15,-15},{717,865},{-236,30} },
+      mul[] = { { -385509.937500f,252670.812500f },{0,725},{-25208,-641921},{-17250,4380} },
+      conj1[] = { { 10.17f,19.799999f },{25,-10},{-1,-894},{-111,-75} },
+      conj2[] = { { -18010.25f,10219.480469f },{10,-25},{-718,-29},{125,-45} };
    float mod1[] = { 22.259130f,26.925823f,894.000549f, 133.962677f },
       mod2[] = { 20707.654297f,26.925823f,718.585388f,132.853302f };
-   int size = sizeof (CompNums1) / sizeof (CompNums1[0]);
+   int size = sizeof (compNums1) / sizeof (compNums1[0]);
    printf ("\n\nTestcases:\n");
    for (int i = 0; i < size; i++) {
       bool conditions[] = {
-        IsEqual (Op_Add (CompNums1[i], CompNums2[i]), Add[i]),
-        IsEqual (Op_Sub (CompNums1[i], CompNums2[i]), Sub[i]),
-        IsEqual (Op_Mul (CompNums1[i], CompNums2[i]), Mul[i]),
-        IsEqual (Op_Conj (CompNums1[i]) , Conj1[i]) && IsEqual (Op_Conj (CompNums2[i]), Conj2[i]),
-        Op_Mod (CompNums1[i]) == mod1[i] && Op_Mod (CompNums2[i]) == mod2[i]
+        IsEqual (Op_Add (compNums1[i], compNums2[i]), add[i]),
+        IsEqual (Op_Sub (compNums1[i], compNums2[i]), sub[i]),
+        IsEqual (Op_Mul (compNums1[i], compNums2[i]), mul[i]),
+        IsEqual (Op_Conj (compNums1[i]) , conj1[i]) && IsEqual (Op_Conj (compNums2[i]), conj2[i]),
+        Op_Mod (compNums1[i]) == mod1[i] && Op_Mod (compNums2[i]) == mod2[i]
       };
       if (!conditions[0] || !conditions[1] || !conditions[2] || !conditions[3] || !conditions[4]) {
          char* funcNames[] = { "Addition","Subtraction","Multiplication","Conjugate","Modulus" };
@@ -68,18 +68,18 @@ void TestCases () { // Runs test cases
    printf ("Passed\n");
 }
 
-void PrintAll (CompNum Num1, CompNum Num2) { // prints all operation results to the console
-   CompNum ResAdd = Op_Add (Num1, Num2), ResSub = Op_Sub (Num1, Num2), ResMul = Op_Mul (Num1, Num2),
-      ResConj1 = Op_Conj (Num1), ResConj2 = Op_Conj (Num2);
-   float resMod1 = Op_Mod (Num1), resMod2 = Op_Mod (Num2);
-   if (isinf (ResAdd.realPart) || isinf (ResAdd.imagPart) || isinf (ResSub.realPart) || isinf (ResSub.imagPart)
-       || isinf (ResMul.realPart) || isinf (ResMul.imagPart) || isinf (resMod1) || isinf (resMod2)) {
+void PrintAll (CompNum num1, CompNum num2) { // prints all operation results to the console
+   CompNum resAdd = Op_Add (num1, num2), resSub = Op_Sub (num1, num2), resMul = Op_Mul (num1, num2),
+      resConj1 = Op_Conj (num1), resConj2 = Op_Conj (num2);
+   float resMod1 = Op_Mod (num1), resMod2 = Op_Mod (num2);
+   if (isinf (resAdd.RealPart) || isinf (resAdd.ImagPart) || isinf (resSub.RealPart) || isinf (resSub.ImagPart)
+       || isinf (resMul.RealPart) || isinf (resMul.ImagPart) || isinf (resMod1) || isinf (resMod2)) {
       printf ("\nOutput exceeds float range!!!\n");
       return;
    }
    char* funcNames[] = { "Add","Sub","Mul","Conj1","Conj2" };
-   CompNum FuncResults[] = { ResAdd,ResSub,ResMul,ResConj1,ResConj2 };
-   for (int i = 0; i < 5; i++)  printComplex (FuncResults[i], funcNames[i]);
+   CompNum funcResults[] = { resAdd,resSub,resMul,resConj1,resConj2 };
+   for (int i = 0; i < 5; i++)  printComplex (funcResults[i], funcNames[i]);
    printf ("\nMod1 Result: %f\n\nMod2 Result: %f\n", resMod1, resMod2);
 }
 
@@ -90,9 +90,9 @@ int main () {
       switch (opt) {
          case 1: // All operations
          {
-            CompNum Num1 = GetUserInput ("1");
-            CompNum Num2 = GetUserInput ("2");
-            PrintAll (Num1, Num2);
+            CompNum num1 = GetUserInput ("1");
+            CompNum num2 = GetUserInput ("2");
+            PrintAll (num1, num2);
             break;
          }
          case 2: // test cases

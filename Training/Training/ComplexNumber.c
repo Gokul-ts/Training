@@ -9,27 +9,27 @@
 #include "ComplexNumber.h"
 #include <math.h>
 
-CompNum Op_Add (CompNum CompNum1, CompNum CompNum2) {
-   CompNum Result = { CompNum1.realPart + CompNum2.realPart, CompNum1.imagPart + CompNum2.imagPart };
-   return Result;
+CompNum Op_Add (CompNum compNum1, CompNum compNum2) {
+   CompNum result = { compNum1.RealPart + compNum2.RealPart, compNum1.ImagPart + compNum2.ImagPart };
+   return result;
 }
 
-CompNum Op_Sub (CompNum CompNum1, CompNum CompNum2) {
-   CompNum Result = { CompNum1.realPart - CompNum2.realPart,CompNum1.imagPart - CompNum2.imagPart };
-   return Result;
+CompNum Op_Sub (CompNum compNum1, CompNum compNum2) {
+   CompNum result = { compNum1.RealPart - compNum2.RealPart, compNum1.ImagPart - compNum2.ImagPart };
+   return result;
 }
 
-CompNum Op_Mul (CompNum CompNum1, CompNum CompNum2) {
-   CompNum Result = { CompNum1.realPart * CompNum2.realPart - CompNum1.imagPart * CompNum2.imagPart,
-      CompNum1.realPart * CompNum2.imagPart + CompNum1.imagPart * CompNum2.realPart };
-   return Result;
+CompNum Op_Mul (CompNum compNum1, CompNum compNum2) {
+   CompNum result = { compNum1.RealPart * compNum2.RealPart - compNum1.ImagPart * compNum2.ImagPart,
+      compNum1.RealPart * compNum2.ImagPart + compNum1.ImagPart * compNum2.RealPart };
+   return result;
 }
 
-float Op_Mod (CompNum CompNumber) {
-   return (float)sqrt (CompNumber.realPart * CompNumber.realPart + CompNumber.imagPart * CompNumber.imagPart);
+float Op_Mod (CompNum compNumber) {
+   return (float)sqrt (compNumber.RealPart * compNumber.RealPart + compNumber.ImagPart * compNumber.ImagPart);
 }
 
-CompNum Op_Conj (CompNum CompNumber) {
-   CompNum Result = { CompNumber.realPart,-(CompNumber.imagPart) };
-   return Result;
+CompNum Op_Conj (CompNum compNumber) {
+   CompNum result = { compNumber.RealPart,-(compNumber.ImagPart) };
+   return result;
 }
